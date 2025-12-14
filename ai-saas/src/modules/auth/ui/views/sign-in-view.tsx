@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+
 import { z } from "zod";
 import { OctagonAlertIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle } from "@/components/ui/alert";
+
+import { authClient } from "@/lib/auth-client";
 import {
   useFormField,
   Form,
@@ -29,6 +34,9 @@ const formSchema = z.object({
 });
 
 export const SignInView = () => {
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,12 +44,31 @@ export const SignInView = () => {
       password: "",
     },
   });
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    setError(null);
+
+    await authClient.signIn.email(
+      {
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onSuccess: () => {
+          router.push("/");
+        },
+        onError: (error) => {
+          setError(error?.error?.message);
+        },
+      }
+    );
+  };
   return (
     <div className="flex flex-col gap-6">
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
           <Form {...form}>
-            <form className="p-6 md:p-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
               <div className="flex flex-col gap-6 ">
                 <div className="flex flex-col items-center  text-center">
                   <h1 className="text-2xl font-bold">Welcome Back</h1>
@@ -89,10 +116,10 @@ export const SignInView = () => {
                     )}
                   ></FormField>
                 </div>
-                {true && (
+                {!!error && (
                   <Alert className="bg-destructive/10 border-none">
                     <OctagonAlertIcon className="h-4 w-4 !text-destructive " />
-                    <AlertTitle>Error</AlertTitle>
+                    <AlertTitle>{error}r</AlertTitle>
                   </Alert>
                 )}
                 <Button type="submit" className="w-full">
