@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { OctagonAlertIcon } from "lucide-react";
@@ -111,6 +113,15 @@ export const SignInView = () => {
                   <Button variant="outline" type="button" className="w-full">
                     Github
                   </Button>
+                </div>
+                <div className="text-center text-sm">
+                  Don&apos;t have an account?{" "}
+                  <Link
+                    href="/sign-up"
+                    className="underline underline-offset-4"
+                  >
+                    Sign Up
+                  </Link>
                 </div>
               </div>
             </form>
