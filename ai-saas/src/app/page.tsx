@@ -1,19 +1,7 @@
-"use client";
+import { HomeView } from "@/modules/home/ui/views/home-view";
 
-import { Button } from "@/components/ui/button";
+const Page = () => {
+  return <HomeView />;
+};
 
-import { authClient } from "@/lib/auth-client";
-
-export default function Home() {
-  const { data: session } = authClient.useSession();
-
-  if (!session) {
-    return <p>Loading....</p>;
-  }
-  return (
-    <div className="p-4 flex flex-col gap-y-4">
-      <p>Logged in as {session.user.name} </p>
-      <Button onClick={() => authClient.signOut()}>Sign Out</Button>
-    </div>
-  );
-}
+export default Page;
