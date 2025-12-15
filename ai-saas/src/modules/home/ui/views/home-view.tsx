@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 import { authClient } from "@/lib/auth-client";
 
-export default function Home() {
+export default function HomeView() {
   const { data: session } = authClient.useSession();
 
   if (!session) {
