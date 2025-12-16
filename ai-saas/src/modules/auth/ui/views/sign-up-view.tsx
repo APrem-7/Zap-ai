@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { FaGithub, FaGoogle } from "react-icons/fa";
+
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 
@@ -55,11 +57,11 @@ export const SignUpView = () => {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
     setError(null);
     setPending(true);
 
-    await authClient.signUp.email(
+    authClient.signUp.email(
       {
         name: data.name,
         email: data.email,
@@ -77,6 +79,17 @@ export const SignUpView = () => {
       }
     );
   };
+
+  const onSocial = (provider: "google" | "github") => {
+    setError(null);
+    setPending(true);
+
+    authClient.signIn.social({
+      provider: provider,
+      callbackURL: "/",
+    });
+  };
+
   return (
     <div className="flex flex-col gap-6">
       <Card className="overflow-hidden p-0">
@@ -191,18 +204,24 @@ export const SignUpView = () => {
                   <Button
                     disabled={pending}
                     variant="outline"
-                    type="button"
+                    type="submit"
                     className="w-full"
+                    onClick={() => {
+                      onSocial("google");
+                    }}
                   >
-                    Google
+                    <FaGoogle />
                   </Button>
                   <Button
                     disabled={pending}
                     variant="outline"
-                    type="button"
+                    type="submit"
                     className="w-full"
+                    onClick={() => {
+                      onSocial("github");
+                    }}
                   >
-                    Github
+                    <FaGithub />
                   </Button>
                 </div>
                 <div className="text-center text-sm">
