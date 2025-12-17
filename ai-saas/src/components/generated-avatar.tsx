@@ -1,10 +1,9 @@
 import { createAvatar } from "@dicebear/core";
 import { adventurer, initials } from "@dicebear/collection";
 
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { cn } from "@/lib/utils";
-import { AvatarFallback } from "@radix-ui/react-avatar";
 
 interface GeneratedAvatarProps {
   seed: string;
@@ -32,9 +31,8 @@ export const GeneratedAvatar = ({
   }
   return (
     <Avatar className={cn(className)}>
-      <AvatarImage src={avatar.toDataUri()} alt="Avatar">
-        <AvatarFallback>{seed.charAt(0).toUpperCase()}</AvatarFallback>
-      </AvatarImage>
+      <AvatarImage src={avatar.toDataUri()} alt="Avatar" />
+      <AvatarFallback>{seed.charAt(0).toUpperCase()}</AvatarFallback>
     </Avatar>
   );
 };
