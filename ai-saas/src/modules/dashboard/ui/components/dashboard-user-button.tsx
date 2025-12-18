@@ -11,8 +11,19 @@ import {
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { GeneratedAvatar } from "@/components/generated-avatar";
 import { ChevronDownIcon, CreditCardIcon, LogOutIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export const DashboardUserButton = () => {
+  const router = useRouter();
+  const onLogout = () => {
+    authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/sign-in"); // redirect to login page
+        },
+      },
+    });
+  };
   const { data, isPending } = authClient.useSession();
   if (isPending || !data?.user) {
     return null;
@@ -49,7 +60,10 @@ export const DashboardUserButton = () => {
           Billing
           <CreditCardIcon className="size-4" />
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer flex items-center justify-between">
+        <DropdownMenuItem
+          onClick={onLogout}
+          className="cursor-pointer flex items-center justify-between"
+        >
           Logout
           <LogOutIcon className="size-4" />
         </DropdownMenuItem>
