@@ -14,8 +14,8 @@ interface GeneratedAvatarProps {
 
 export const GeneratedAvatar = ({
   seed,
-  className,
   variant,
+  className,
 }: GeneratedAvatarProps) => {
   let avatar;
 

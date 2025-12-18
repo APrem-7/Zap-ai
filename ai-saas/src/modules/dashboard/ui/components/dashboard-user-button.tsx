@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { GeneratedAvatar } from "@/components/generated-avatar";
 
 export const DashboardUserButton = () => {
   const { data, isPending } = authClient.useSession();
@@ -21,7 +22,13 @@ export const DashboardUserButton = () => {
           <Avatar>
             <AvatarImage src={data.user.image} />
           </Avatar>
-        ) : null}
+        ) : (
+          <GeneratedAvatar
+            seed={data.user.name}
+            variant="initials"
+            className="size-9 mr-3"
+          />
+        )}
       </DropdownMenuTrigger>
     </DropdownMenu>
   );
