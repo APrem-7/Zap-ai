@@ -4,6 +4,7 @@ import { fetchAgents } from "@/app/api/agents/agents";
 import { useQuery } from "@tanstack/react-query";
 
 import { LoadingState } from "@/components/loading-state";
+import { ErrorState } from "@/components/error-state";
 
 export const AgentView = () => {
   const {
@@ -25,7 +26,7 @@ export const AgentView = () => {
   }
 
   if (error) {
-    return <LoadingState title="Error" description="Something broke 💥" />;
+    return <ErrorState title="Error" description="Error Fetching the Agents" />;
   }
 
   return (
