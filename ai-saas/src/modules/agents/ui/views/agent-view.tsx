@@ -12,6 +12,7 @@ export const AgentView = () => {
     isError,
   } = useQuery({
     queryKey: ["agents"],
+    throwOnError: true,
     queryFn: async () => {
       console.log("Client fetching agents");
       return await fetchAgents();
@@ -25,10 +26,6 @@ export const AgentView = () => {
         description="Please wait while we fetch the agents"
       />
     );
-  }
-
-  if (isError) {
-    return <ErrorState title="Error" description="Error Fetching the Agents" />;
   }
 
   return (
