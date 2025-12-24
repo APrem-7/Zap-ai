@@ -1,7 +1,6 @@
 "use client";
-
-import { fetchAgents } from "@/app/api/agents/agents";
 import { useQuery } from "@tanstack/react-query";
+import { fetchAgents } from "@/app/api/agents/agents";
 
 import { LoadingState } from "@/components/loading-state";
 import { ErrorState } from "@/components/error-state";
@@ -10,10 +9,13 @@ export const AgentView = () => {
   const {
     data: agents,
     isLoading,
-    error,
+    isError,
   } = useQuery({
     queryKey: ["agents"],
-    queryFn: fetchAgents,
+    queryFn: async () => {
+      console.log("Client fetching agents");
+      return await fetchAgents();
+    },
   });
 
   if (isLoading) {
@@ -25,7 +27,7 @@ export const AgentView = () => {
     );
   }
 
-  if (error) {
+  if (isError) {
     return <ErrorState title="Error" description="Error Fetching the Agents" />;
   }
 
