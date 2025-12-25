@@ -5,6 +5,9 @@ import { fetchAgents } from "@/app/api/agents/agents";
 import { LoadingState } from "@/components/loading-state";
 import { ErrorState } from "@/components/error-state";
 
+import { LoadingState } from "@/components/loading-state";
+import { ErrorState } from "@/components/error-state";
+
 export const AgentView = () => {
   const {
     data: agents,
@@ -30,6 +33,13 @@ export const AgentView = () => {
 
   return (
     <div>
+      <pre>
+        {JSON.stringify(
+          agents?.map((agent) => agent.name),
+          null,
+          2
+        )}
+      </pre>
       <pre>
         {JSON.stringify(
           agents?.map((agent) => agent.name),
