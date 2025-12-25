@@ -2,10 +2,10 @@ import { fetchAgents } from "@/app/api/agents/agents";
 import { AgentView } from "@/modules/agents/ui/views/agent-view";
 import { getQueryClient } from "@/utils/query-client";
 
-import { LoadingState } from "@/components/loading-state";
+
 
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
+
 
 const Page = async () => {
   const queryClient = getQueryClient();
