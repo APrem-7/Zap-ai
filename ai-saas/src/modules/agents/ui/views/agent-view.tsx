@@ -4,13 +4,27 @@ import { fetchAgents } from "@/app/api/agents/agents";
 import { LoadingState } from "@/components/loading-state";
 
 export const AgentView = () => {
-  const { data: agents, isLoading } = useQuery({
+  const {
+    data: agents,
+    isLoading,
+    isFetching,
+    status,
+    fetchStatus,
+  } = useQuery({
     queryKey: ["agents"],
     throwOnError: true,
     queryFn: async () => {
-      console.log("Client fetching agents");
+      console.log("🌐 CLIENT fetching agents (network request)");
       return await fetchAgents();
     },
+    staleTime: 30000,
+  });
+
+  console.log("🔍 Query state:", {
+    isLoading,
+    isFetching,
+    status,
+    fetchStatus,
   });
 
   if (isLoading) {
@@ -24,6 +38,12 @@ export const AgentView = () => {
 
   return (
     <div>
+      <div className="mb-4 p-2 bg-gray-100 rounded text-sm">
+        <p>Status: {status}</p>
+        <p>Fetch Status: {fetchStatus}</p>
+        <p>Is Loading: {isLoading ? "Yes" : "No"}</p>
+        <p>Is Fetching: {isFetching ? "Yes" : "No"}</p>
+      </div>
       <pre>
         {JSON.stringify(
           agents?.map((agent) => agent.name),
