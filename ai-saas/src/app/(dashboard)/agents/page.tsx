@@ -6,7 +6,7 @@ import { LoadingState } from "@/components/loading-state";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorState } from "@/components/error-state";
-import { ListHeader } from "@/modules/agents/components/list-header";
+import { AgentsListHeader } from "@/modules/agents/components/agent-list-header";
 
 const Page = async () => {
   const queryClient = getQueryClient();
@@ -22,23 +22,30 @@ const Page = async () => {
 
   return (
     <>
-    <ListHeader />
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense
-        fallback={
-          <LoadingState
-            title="Loading agents"
-            description="Please wait while we fetch the agents"
-          />
-        }
-      >
-        <ErrorBoundary fallback={<ErrorState title="Error loading agents" description="Please try again" />}>
-          <div className="p-4 flex flex-col gap-y-4">
-            <AgentView />
-          </div>
-        </ErrorBoundary>
-      </Suspense>
-    </HydrationBoundary>
+      <AgentsListHeader />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense
+          fallback={
+            <LoadingState
+              title="Loading agents"
+              description="Please wait while we fetch the agents"
+            />
+          }
+        >
+          <ErrorBoundary
+            fallback={
+              <ErrorState
+                title="Error loading agents"
+                description="Please try again"
+              />
+            }
+          >
+            <div className="p-4 flex flex-col gap-y-4">
+              <AgentView />
+            </div>
+          </ErrorBoundary>
+        </Suspense>
+      </HydrationBoundary>
     </>
   );
 };
