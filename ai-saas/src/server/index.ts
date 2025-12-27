@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
-
 dotenv.config();
 
 const app = express();
@@ -19,6 +18,7 @@ app.get("/health", (req, res) => {
 
 // Agents Route
 import agentsRouter from "./routes/agents";
+import { requireAuth } from "./middleware/auth-middleware";
 app.use("/agents", agentsRouter);
 
 // Start Server

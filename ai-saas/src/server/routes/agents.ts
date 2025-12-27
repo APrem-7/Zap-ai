@@ -1,22 +1,11 @@
 import express from "express";
-import { db } from "@/db";
-import { agents } from "@/db/schema";
+
+import { requireAuth } from "@/server/middleware/auth-middleware";
+import { getAgents, createAgent } from "../controllers/agents.controller";
 
 const router = express.Router();
 
-// GET /agents
-router.get("/", async (req, res) => {
-  try {
-    const data = await db
-      .select()
-      .from(agents);
-
-    res.json(data);
-    
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Failed to fetch agents" });
-  }
-});
+router.get("/", getAgents);                    // public
+//router.post("/", requireAuth, createAgent);    // protected
 
 export default router;
