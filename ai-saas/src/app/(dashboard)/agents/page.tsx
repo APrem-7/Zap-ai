@@ -1,8 +1,13 @@
 import { AgentView } from "@/modules/agents/ui/views/agent-view";
 import { fetchAgents } from "@/app/api/agents/agents";
 import { getQueryClient } from "@/utils/query-client";
+//import { ErrorState } from "@/components/error-state";
+
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
+import { LoadingState } from "@/components/loading-state";
+
+import { Suspense } from "react";
 const Page = async () => {
   const queryClient = getQueryClient();
 
@@ -17,9 +22,18 @@ const Page = async () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="p-4 flex flex-col gap-y-4">
-        <AgentView />
-      </div>
+      <Suspense
+        fallback={
+          <LoadingState
+            title="Loading agents"
+            description="Please wait while we fetch the agents"
+          />
+        }
+      >
+        <div className="p-4 flex flex-col gap-y-4">
+          <AgentView />
+        </div>
+      </Suspense>
     </HydrationBoundary>
   );
 };
