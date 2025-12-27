@@ -8,8 +8,8 @@ import { Suspense } from "react";
 const Page = async () => {
   const queryClient = getQueryClient();
 
-  // Prefetch the data
-  await queryClient.prefetchQuery({
+  // Prefetch the data WITHOUT awaiting - non-blocking!
+  void queryClient.prefetchQuery({
     queryKey: ["agents"],
     queryFn: async () => {
       console.log("🖥️ SERVER prefetching agents");
