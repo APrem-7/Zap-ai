@@ -1,12 +1,15 @@
 import { agentInsertSchema } from "@/modules/agents/schema";
 
-export async function fetchAgents() {
-  const res = await fetch("http://localhost:8000/agents");
+
+export const fetchAgents = async () => {
+  const res = await fetch("http://localhost:8000/agents", {
+    method: "GET",
+    credentials: "include", // IMPORTANT for cookies/session
+  });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch agents");
+     throw new Error(`Failed to fetch agents: ${res.status}`)
   }
-
   return res.json();
 }
 
@@ -22,7 +25,7 @@ export const createAgent = async (input: { name: string; description: string }) 
   });
 
   if (!res.ok) {
-    throw new Error("Failed to create agent");
+     throw new Error(`Failed to create agent: ${res.status}`);
   }
 
   return res.json();
