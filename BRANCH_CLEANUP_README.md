@@ -41,7 +41,7 @@ If you have push permissions to the repository:
 
 ```bash
 # Navigate to the repository
-cd /path/to/Meet-ai
+cd Meet-ai
 
 # Run the script
 ./delete-merged-branches.sh

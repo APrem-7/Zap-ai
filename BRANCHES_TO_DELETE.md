@@ -141,7 +141,7 @@ git push origin --delete windsurf-changes-v2
 
 ### Option 3: Bulk Delete Script
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # Save this as delete-merged-branches.sh and run it
 
 BRANCHES_TO_DELETE=(
