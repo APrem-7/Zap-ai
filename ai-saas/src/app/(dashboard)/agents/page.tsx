@@ -1,11 +1,5 @@
-import { AgentView } from '@/modules/agents/ui/views/agent-view';
-import { fetchAgents } from '@/app/api/agents/agents';
-import { getQueryClient } from '@/utils/query-client';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { LoadingState } from '@/components/loading-state';
-import { Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
-import { ErrorState } from '@/components/error-state';
+import { AgentView } from "@/modules/agents/ui/views/agent-view";
+import { AgentsListHeader } from "@/modules/agents/components/agent-list-header";
 
 const Page = async () => {
   return (

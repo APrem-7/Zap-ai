@@ -7,12 +7,7 @@ import { ErrorState } from '@/components/error-state';
 interface Agent {
   id: string;
   name: string;
-  description: string;
-  model: string;
-  temperature: number;
-  top_p: number;
-  presence_penalty: number;
-  frequency_penalty: number;
+  instructions: string;
 }
 
 export const AgentView = () => {
@@ -45,12 +40,14 @@ export const AgentView = () => {
     );
   }
   return (
-    <pre>
-      {JSON.stringify(
-        data.map((agent: Agent) => agent.name),
-        null,
-        2
-      )}
-    </pre>
+    <div>
+      {Array.isArray(data) &&
+        data.map((agent: Agent) => (
+          <div key={agent.id}>
+            <h2>{agent.name}</h2>
+            <p>{agent.instructions}</p>
+          </div>
+        ))}
+    </div>
   );
 };
