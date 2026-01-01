@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Script to delete merged branches from GitHub repository
 # Run this script if you have push permissions to the repository

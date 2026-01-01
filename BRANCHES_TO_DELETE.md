@@ -27,10 +27,11 @@ This document lists all branches that have been fully merged into the `main` bra
 - **Description:** Implemented sign-up form with validation and error handling
 
 ### 3. AuthUI-Socials-Callbacks
-- **PR:** #3
+- **PR:** #3 and #5
 - **Merged:** 2025-12-16
-- **Merge Commit:** 661863d
-- **Description:** Added social login callbacks for AuthUI
+- **Merge Commits:** 661863d (PR #3), 0b34d7a (PR #5)
+- **Description:** User authentication system with social login callbacks
+- **Note:** This branch appears in two PRs but is deleted only once
 
 ### 4. AuthUI-Socials
 - **PR:** #4
@@ -38,56 +39,49 @@ This document lists all branches that have been fully merged into the `main` bra
 - **Merge Commit:** 0d9e982
 - **Description:** Integrated social login options (Google, GitHub)
 
-### 5. AuthUI-Socials-Callbacks (also in PR #5)
-- **PR:** #5 (same branch as #3, merged via different PR path)
-- **Merged:** 2025-12-16
-- **Merge Commit:** 0b34d7a
-- **Description:** User authentication system with social login
-- **Note:** This is the same branch as entry #3, merged via PR #5
-
-### 6. AuthUI
+### 5. AuthUI
 - **PR:** #6
 - **Merged:** 2025-12-16
 - **Merge Commit:** c8be9d3
 - **Description:** Main AuthUI implementation with email/password auth
 
-### 7. Dashboard-Navbar
+### 6. Dashboard-Navbar
 - **PR:** #9
 - **Merged:** 2025-12-21
 - **Merge Commit:** ba12c19
 - **Description:** Dashboard navigation bar implementation
 
-### 8. Dashboard
+### 7. Dashboard
 - **PR:** #10
 - **Merged:** 2025-12-21
 - **Merge Commit:** 9bcc583
 - **Description:** Dashboard layout with navigation sidebar
 
-### 9. Backend
+### 8. Backend
 - **PR:** #11
 - **Merged:** 2025-12-22
 - **Merge Commit:** fefc8f9
 - **Description:** Backend functionality implementation
 
-### 10. Agents
+### 9. Agents
 - **PR:** #12
 - **Merged:** 2025-12-24
 - **Merge Commit:** cdbc01a
 - **Description:** Agents feature implementation
 
-### 11. new-Backend
+### 10. new-Backend
 - **PR:** #14
 - **Merged:** 2025-12-27
 - **Merge Commit:** ea46f7a
 - **Description:** Refactored backend with agent creation and auth middleware
 
-### 12. windsurf-changes
+### 11. windsurf-changes
 - **PR:** #15
 - **Merged:** 2025-12-27
 - **Merge Commit:** 1206c01
 - **Description:** Added loading state UI for agents page
 
-### 13. windsurf-changes-v2
+### 12. windsurf-changes-v2
 - **PR:** #16
 - **Merged:** 2025-12-29
 - **Merge Commit:** a9e8b7d
