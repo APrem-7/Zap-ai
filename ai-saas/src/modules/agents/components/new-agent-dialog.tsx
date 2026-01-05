@@ -16,7 +16,7 @@ export const NewAgentDialog = ({ open, onOpenChange }: NewAgentDialogProps) => {
     >
       <div className="py-4">
         <AgentForm
-          onSubmit={() => {
+          onSuccess={() => {
             onOpenChange(false);
           }}
           onCancel={() => {
