@@ -5,6 +5,7 @@ import { LoadingState } from '@/components/loading-state';
 import { ErrorState } from '@/components/error-state';
 import { DataTable } from '../../components/data-table';
 import { columns } from '../../components/columns';
+import { EmptyState } from '@/components/empty-state';
 
 interface Agent {
   id: string;
@@ -49,6 +50,12 @@ export const AgentView = () => {
           console.log(row);
         }}
       />
+      {data && data.length === 0 && (
+        <EmptyState
+          title="No agents found"
+          description="Please create an agent to get started"
+        />
+      )}
     </div>
   );
 };
