@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-
+import { useState } from 'react';
 interface AgentFormProps {
   onSuccess: () => {};
   onError: () => {};
@@ -33,6 +33,7 @@ export const AgentForm = ({
   initialValues,
   onCancel,
 }: AgentFormProps) => {
+  const [avatarSeed, setAvatarSeed] = useState(initialValues?.name || 'agent');
   const queryClient = useQueryClient();
 
   const createAgentMutation = useMutation({
@@ -72,6 +73,7 @@ export const AgentForm = ({
   const isPending = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof agentInsertSchema>) => {
+    setAvatarSeed(values.name?.trim() || 'agent');
     try {
       if (isEdit) {
         console.log('TODO: updateAgent', values);
@@ -90,7 +92,7 @@ export const AgentForm = ({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <GeneratedAvatar
-          seed={initialValues?.name || 'agent'}
+          seed={avatarSeed}
           variant="bottsNeutral"
           className="border size-16"
         />
@@ -101,7 +103,10 @@ export const AgentForm = ({
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Enter agent name" />
+                <Input {...field} placeholder="Enter agent name" onBlur={(e)=>{
+                  field.onBlur();
+                  setAvatarSeed(e.target.value.trim() || 'agent')
+                }} />
               </FormControl>
               <FormMessage />
             </FormItem>
