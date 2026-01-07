@@ -26,7 +26,7 @@ export const columns: ColumnDef<Agent>[] = [
       <div className="flex flex-col gap-y-1">
         <div className="flex items-center gap-x-2">
           <GeneratedAvatar seed={row.original.name} variant="bottsNeutral" />
-          <span>{row.original.name}</span>
+          <span className="font-semibold capitalize">{row.original.name}</span>
         </div>
       </div>
     ),
