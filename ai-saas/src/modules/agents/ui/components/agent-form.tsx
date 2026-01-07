@@ -33,7 +33,7 @@ export const AgentForm = ({
   initialValues,
   onCancel,
 }: AgentFormProps) => {
-  const [avatarSeed, setAvatarSeed] = useState('agent');
+  const [avatarSeed, setAvatarSeed] = useState(initialValues?.name || 'agent');
   const queryClient = useQueryClient();
 
   const createAgentMutation = useMutation({
@@ -73,6 +73,7 @@ export const AgentForm = ({
   const isPending = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof agentInsertSchema>) => {
+    setAvatarSeed(values.name?.trim() || 'agent');
     try {
       if (isEdit) {
         console.log('TODO: updateAgent', values);
@@ -103,6 +104,7 @@ export const AgentForm = ({
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input {...field} placeholder="Enter agent name" onBlur={(e)=>{
+                  field.onBlur();
                   setAvatarSeed(e.target.value.trim() || 'agent')
                 }} />
               </FormControl>
