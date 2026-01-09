@@ -15,13 +15,13 @@ export const AgentsListHeader = () => {
         <div className="flex items-center justify-between">   
           <div className="flex flex-col gap-y-1">
             <h5 className="font-semibold text-2xl tracking-tight text-foreground animate-slide-in">My Agents</h5>
-            <p className="text-sm text-muted-foreground animate-slide-up" style={{ animationDelay: '100ms' }}>
+            <p className="text-sm text-muted-foreground animate-slide-in" style={{ animationDelay: '100ms' }}>
               Manage and configure your AI agents
             </p>
           </div>
           <Button 
             onClick={() => setOpen(true)}
-            className="smooth-transition hover:shadow-md hover:scale-105 animate-slide-down"
+            className="smooth-transition hover:shadow-md hover:scale-105 animate-slide-in"
             style={{ animationDelay: '10ms' }}
           >
             <PlusIcon className="transition-transform" />
