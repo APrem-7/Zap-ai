@@ -235,3 +235,9 @@
     transition: none !important;
   }
 }
+
+/* Change ring color for all the ShadCN elements */
+:root {
+  --ring: 221 83% 23%; /* hsl for #00246b */
+}
+
