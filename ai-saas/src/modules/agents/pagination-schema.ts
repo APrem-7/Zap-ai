@@ -1,7 +1,17 @@
-import { z } from "zod";
+import {
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+  MAX_PAGE_SIZE,
+  MIN_PAGE_SIZE,
+} from '@/constant';
+import { z } from 'zod';
 
 export const paginationSchema = z.object({
-  page: z.number().int().positive().default(1),
-  limit: z.number().int().positive().max(100).default(10),
-  search: z.string().optional().default(""),
+  page: z.number().optional().default(DEFAULT_PAGE),
+  limit: z
+    .number()
+    .min(MIN_PAGE_SIZE)
+    .max(MAX_PAGE_SIZE)
+    .default(DEFAULT_PAGE_SIZE).optional,
+  search: z.string().optional(),
 });

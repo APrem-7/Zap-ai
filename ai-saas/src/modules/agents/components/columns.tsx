@@ -43,9 +43,14 @@ export const columns: ColumnDef<Agent>[] = [
     accessorKey: 'meetingcounts',
     header: 'Meetings',
     cell: ({ row }) => (
-      <Badge variant="outline" className="flex items-center gap-x-2 [&>svg]:size-4 ">
-        <VideoIcon className="text-blue-700" />
-        5
+      <Badge
+        variant="outline"
+        className="flex items-center gap-x-2 [&>svg]:size-4 smooth-transition hover:shadow-sm hover:bg-accent/50 group"
+      >
+        <VideoIcon className="text-blue-700 transition-transform duration-200 group-hover:scale-110" />
+        <span className="transition-colors duration-200 group-hover:text-foreground">
+          5 Meetings
+        </span>
       </Badge>
     ),
   },
