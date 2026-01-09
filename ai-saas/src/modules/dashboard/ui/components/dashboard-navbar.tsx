@@ -24,7 +24,7 @@ export const DashboardNavbar = () => {
   return (
     <>
       <DashboardCommand open={commandOpen} setOpen={setCommandOpen} />
-      <nav className="flex px-4 gap-x-2 items-center py-3 border-b bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60 animate-fade-in">
+      <nav className="flex px-4 gap-x-2 items-center py-3 border-b bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60 ">
         <Button
           className="size-9 smooth-transition hover:shadow-sm"
           variant="outline"
