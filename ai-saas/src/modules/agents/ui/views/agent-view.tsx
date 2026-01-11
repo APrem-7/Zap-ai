@@ -44,13 +44,13 @@ export const AgentView = () => {
   return (
     <div className="animate-fade-smooth">
       <DataTable
-        data={data || []}
+        data={data?.data || []}
         columns={columns}
         onRowClick={(row) => {
           console.log(row);
         }}
       />
-      {data && data.length === 0 && (
+      {data?.data && data.data.length === 0 && (
         <div className="animate-slide-up">
           <EmptyState
             title="No agents found"

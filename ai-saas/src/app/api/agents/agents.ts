@@ -1,8 +1,12 @@
 import { agentInsertSchema } from '@/modules/agents/schema';
 import z from 'zod';
 
-export const fetchAgents = async () => {
-  const res = await fetch('http://localhost:8000/agents', {
+export const fetchAgents = async (search?: string) => {
+  const url = new URL('http://localhost:8000/agents');
+  if (search) {
+    url.searchParams.set('search', search);
+  }
+  const res = await fetch(url, {
     method: 'GET',
     credentials: 'include', // IMPORTANT: sends cookies for session
     headers: {
@@ -13,7 +17,8 @@ export const fetchAgents = async () => {
   if (!res.ok) {
     throw new Error(`Failed to fetch agents: ${res.status}`);
   }
-  return res.json();
+  const res_data = await res.json();
+  return res_data;
 };
 
 export const createAgent = async (input: z.infer<typeof agentInsertSchema>) => {
@@ -33,5 +38,3 @@ export const createAgent = async (input: z.infer<typeof agentInsertSchema>) => {
 
   return res.json();
 };
-
-
