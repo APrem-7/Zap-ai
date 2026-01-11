@@ -13,7 +13,6 @@ export const getAgents = async (req: Request, res: Response) => {
     const cacheKey = `agents:${req.user.id}`;
     const cachedData = await redis.get(cacheKey);
     if (cachedData) {
-
       // Data is in cache, return it
       return res.json(cachedData);
     }
