@@ -19,7 +19,7 @@ export const getAgents = async (req: Request, res: Response) => {
 
     const cacheKey = `agents:${req.user.id}`;
 
-    
+
     console.log(`💾 Checking cache for key: ${cacheKey}`);
     const cachedData = await redis.get(cacheKey);
 
@@ -112,6 +112,8 @@ export const getAgents = async (req: Request, res: Response) => {
     return res.status(500).json({ message: 'Failed to fetch agents' });
   }
 };
+
+
 
 export const createAgents = async (req: Request, res: Response) => {
   console.log('➕ POST /agents endpoint hit');
