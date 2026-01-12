@@ -15,14 +15,10 @@ export const getAgents = async (req: Request, res: Response) => {
   console.log(`👤 User ID: ${req.user.id}`);
   console.log(`🔍 Search query: ${req.query.search || 'none'}`);
   try {
-
-
-    const cacheKey = `agents:${req.user.id}`;
-
+    const cacheKey = `agents:${req.user.id}:${req.query.search || 'all'}`;
 
     console.log(`💾 Checking cache for key: ${cacheKey}`);
     const cachedData = await redis.get(cacheKey);
-
 
     if (cachedData) {
       console.log('🎯 Cache HIT - returning cached agents data');
@@ -31,7 +27,6 @@ export const getAgents = async (req: Request, res: Response) => {
     }
 
     console.log('❌ Cache MISS - fetching from database');
-
 
     const {
       search,
@@ -48,7 +43,6 @@ export const getAgents = async (req: Request, res: Response) => {
     );
     console.log('🗄️ Querying database for agents...');
 
-
     const data = await db
       .select({
         id: agents.id,
@@ -64,7 +58,6 @@ export const getAgents = async (req: Request, res: Response) => {
       )
       .limit(pageSizeNum)
       .offset(offset);
-
 
     console.log(`📊 Found agents:`, data);
     console.log(`📊 Data type: ${typeof data}`);
@@ -113,14 +106,11 @@ export const getAgents = async (req: Request, res: Response) => {
   }
 };
 
-
-
 export const createAgents = async (req: Request, res: Response) => {
   console.log('➕ POST /agents endpoint hit');
   console.log(`👤 User ID: ${req.user.id}`);
   console.log('📝 Request body:', req.body);
   try {
-    const cacheKey = `agents:${req.user.id}`;
     console.log('🔍 Validating input with schema...');
     const input = agentInsertSchema.parse(req.body); // 🔥 REAL SECURITY
     console.log('✅ Input validation passed');
@@ -134,9 +124,11 @@ export const createAgents = async (req: Request, res: Response) => {
       })
       .returning();
     console.log(`✅ Successfully created agent with ID: ${data.id}`);
-
-    console.log(`🗑️ Invalidating cache for key: ${cacheKey}`);
-    await redis.del(cacheKey);
+    console.log(
+      `🗑️ Invalidating all agent search caches for user ${req.user.id}`
+    );
+    const pattern = `agents:${req.user.id}:*`;
+    await redis.invalidate(pattern);
 
     console.log('✅ Agent creation complete');
     return res.json(data) || { message: 'Failed to create agent' };
