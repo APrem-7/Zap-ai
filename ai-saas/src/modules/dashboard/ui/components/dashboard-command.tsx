@@ -6,7 +6,7 @@ import {
   CommandEmpty,
   CommandGroup,
 } from '@/components/ui/command';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { fetchAgents, SearchAgents } from '@/app/api/agents/agents';
 import { useQuery } from '@tanstack/react-query';

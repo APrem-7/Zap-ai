@@ -15,7 +15,18 @@ export const getAgents = async (req: Request, res: Response) => {
   console.log(`👤 User ID: ${req.user.id}`);
   console.log(`🔍 Search query: ${req.query.search || 'none'}`);
   try {
-    const cacheKey = `agents:${req.user.id}:${req.query.search || 'all'}`;
+    const {
+      search,
+      page = DEFAULT_PAGE,
+      pageSize = DEFAULT_PAGE_SIZE,
+    } = req.query;
+
+    const pageNum = Number(page);
+    const pageSizeNum = Number(pageSize);
+
+    const cacheKey = `agents:${req.user.id}:${
+      search || 'all'
+    }:${pageNum}:${pageSizeNum}`;
 
     console.log(`💾 Checking cache for key: ${cacheKey}`);
     const cachedData = await redis.get(cacheKey);
@@ -28,14 +39,6 @@ export const getAgents = async (req: Request, res: Response) => {
 
     console.log('❌ Cache MISS - fetching from database');
 
-    const {
-      search,
-      page = DEFAULT_PAGE,
-      pageSize = DEFAULT_PAGE_SIZE,
-    } = req.query;
-
-    const pageNum = Number(page);
-    const pageSizeNum = Number(pageSize);
     const offset = (pageNum - 1) * pageSizeNum;
 
     console.log(
