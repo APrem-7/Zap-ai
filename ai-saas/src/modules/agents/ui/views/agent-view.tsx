@@ -7,7 +7,8 @@ import { DataTable } from '../../components/data-table';
 import { columns } from '../../components/columns';
 import { EmptyState } from '@/components/empty-state';
 
-import { useQueryState } from 'nuqs';
+import { useQueryState, parseAsInteger } from 'nuqs';
+
 import { DataPagination } from '@/modules/agents/ui/components/data-pagination';
 
 interface Agent {
@@ -17,23 +18,14 @@ interface Agent {
 }
 
 export const AgentView = () => {
-
-  const [page, setPage] = useQueryState('page', {
-    defaultValue: 1,
-    parse: Number,
-  });
-  const [pageSize] = useQueryState('pageSize', {
-    defaultValue: 10,
-    parse: Number,
-  });
-
-  
+  const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
+  const [pageSize] = useQueryState('pageSize', parseAsInteger.withDefault(7));
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['agents', page, pageSize],
     queryFn: () => {
       console.log('🌐 CLIENT fetching agents in useQuery');
-      return fetchAgents(  page, pageSize);
+      return fetchAgents(page, pageSize);
     },
     staleTime: 5 * 60 * 1000, // ✅ 5 minutes - data is fresh
     gcTime: 10 * 60 * 1000, // ✅ 10 minutes - keep in memory
