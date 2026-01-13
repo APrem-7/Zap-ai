@@ -6,7 +6,7 @@ import {
   CommandEmpty,
   CommandGroup,
 } from '@/components/ui/command';
-import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader ,DialogTitle} from '@/components/ui/dialog';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { fetchAgents, SearchAgents } from '@/app/api/agents/agents';
 import { useQuery } from '@tanstack/react-query';
@@ -62,6 +62,7 @@ export const DashboardCommand = ({ open, setOpen }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTitle></DialogTitle>
       <DialogContent className="max-w-lg w-full p-0 rounded-xl shadow-2xl border">
         <DialogHeader></DialogHeader>
         <Command
