@@ -8,6 +8,7 @@ import { columns } from '../../components/columns';
 import { EmptyState } from '@/components/empty-state';
 
 import { useQueryState } from 'nuqs';
+import { DataPagination } from '@/modules/agents/ui/components/data-pagination';
 
 interface Agent {
   id: string;
@@ -72,6 +73,11 @@ export const AgentView = () => {
           />
         </div>
       )}
+      <DataPagination
+        page={page}
+        totalPages={data?.totalPages || 1}
+        onPageChange={setPage}
+      />
     </div>
   );
 };
