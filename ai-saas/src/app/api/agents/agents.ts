@@ -2,8 +2,8 @@ import { agentInsertSchema } from '@/modules/agents/schema';
 import z from 'zod';
 
 export const fetchAgents = async (
-  page?: number,
-  pageSize?: number
+  page: number,
+  pageSize: number
 ) => {
   console.log('🌐 Fetching agents from backend API...');
   console.log(` Page: ${page || 1}, PageSize: ${pageSize || 10}`);
