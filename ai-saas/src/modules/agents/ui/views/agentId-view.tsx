@@ -12,7 +12,6 @@ interface Props {
 export const AgentIdView = ({ agentId }: Props) => {
   console.log(agentId);
   const queryClient = getQueryClient();
-
   const { data, isLoading, error } = useQuery({
     queryKey: ['agents', agentId],
     queryFn: () => getOneAgent(agentId),
