@@ -1,7 +1,11 @@
 import express from 'express';
 
 import { requireAuth } from '@/server/middleware/auth-middleware';
-import { getAgents, getOneAgent, createAgents } from '../controllers/agents.controller';
+import {
+  getAgents,
+  getOneAgent,
+  createAgents,
+} from '../controllers/agents.controller';
 
 const router = express.Router();
 
