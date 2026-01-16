@@ -10,7 +10,6 @@ import { paginationSchema } from '@/modules/agents/pagination-schema';
 import { redis } from '@/lib/redis';
 
 export const getAgents = async (req: Request, res: Response) => {
-
   // console.log('📋 GET /agents endpoint hit');
   // console.log(`👤 User ID: ${req.user.id}`);
   // console.log(`🔍 Search query: ${req.query.search || 'none'}`);
@@ -140,6 +139,37 @@ export const createAgents = async (req: Request, res: Response) => {
     console.error('❌ Error in createAgents:', error);
     return res.status(500).json({
       message: 'Failed to create agent',
+    });
+  }
+};
+
+export const getOneAgent = async (req: Request, res: Response) => {
+  try {
+    const { agentId } = req.params;
+
+    const [data] = await db
+      .select({
+        id: agents.id,
+        name: agents.name,
+        instructions: agents.instructions,
+      })
+      .from(agents)
+      .where(and(eq(agents.userId, req.user.id), eq(agents.id, agentId)))
+      .limit(1);
+      
+    if (!data) {
+      return res.status(404).json({
+        message: 'Agent not found',
+      });
+    }
+
+    console.log('✅ Successfully fetched agent');
+
+    return res.json(data) || { message: 'Failed to fetch agent' };
+  } catch (error) {
+    console.error('❌ Error in getOneAgent:', error);
+    return res.status(500).json({
+      message: 'Failed to get agent',
     });
   }
 };
