@@ -11,6 +11,7 @@ import { VideoIcon } from 'lucide-react';
 import { deleteAgent } from '@/app/api/agents/agents';
 
 import { useRouter } from 'next/navigation';
+import { useConfirm } from '@/hooks/use-confirm';
 
 interface Props {
   agentId: string;
@@ -24,6 +25,10 @@ export const AgentIdView = ({ agentId }: Props) => {
     queryKey: ['agents', agentId],
     queryFn: () => getOneAgent(agentId),
   });
+  const [RemoveConfirmation, confirmRemove] = useConfirm(
+    'Delete Agent',
+    'Are you sure you want to delete this agent?'
+  );
   if (isLoading) {
     return (
       <LoadingState
@@ -70,39 +75,50 @@ export const AgentIdView = ({ agentId }: Props) => {
     }
   };
 
+  const handelRemoveAgent = async () => {
+    const ok = await confirmRemove();
+    if (!ok) {
+      return;
+    }
+    onDelete();
+  };
+
   return (
-    <div className="flex-1 py-4 px-4 md:px-8 flex flex-col gap-y-4">
-      <AgentIdHeaderView
-        agentId={agentId}
-        agentName={data.name}
-        onEdit={onEdit}
-        onCancel={() => {}}
-        onDelete={onDelete}
-      />
-      <div className="bg-white rounded-lg border">
-        <div className="px-4 py-5 gap-y-5 flex flex-col col-span-5">
-          <div className="flex items-center gap-x-3">
-            <GeneratedAvatar
-              seed={data.name}
-              variant="bottsNeutral"
-              className="size-16"
-            />
-            <h2 className="text-2xl font-medium">{data.name}</h2>
-          </div>
-          <Badge
-            variant="outline"
-            className="flex items-center gap-x-2 [&>svg]:size-4"
-          >
-            <VideoIcon />
-            {data.meetingCount}{' '}
-            {data.meetingCount === 1 ? 'Meeting' : 'Meetings'}
-          </Badge>
-          <div className="flex flex-col gap-y-4">
-            <p className="text-lg font-medium">Instructions</p>
-            <p className="text-neutral-800">{data.instructions}</p>
+    <>
+      <RemoveConfirmation />
+      <div className="flex-1 py-4 px-4 md:px-8 flex flex-col gap-y-4">
+        <AgentIdHeaderView
+          agentId={agentId}
+          agentName={data.name}
+          onEdit={onEdit}
+          onCancel={() => {}}
+          onDelete={handelRemoveAgent}
+        />
+        <div className="bg-white rounded-lg border">
+          <div className="px-4 py-5 gap-y-5 flex flex-col col-span-5">
+            <div className="flex items-center gap-x-3">
+              <GeneratedAvatar
+                seed={data.name}
+                variant="bottsNeutral"
+                className="size-16"
+              />
+              <h2 className="text-2xl font-medium">{data.name}</h2>
+            </div>
+            <Badge
+              variant="outline"
+              className="flex items-center gap-x-2 [&>svg]:size-4"
+            >
+              <VideoIcon />
+              {data.meetingCount}{' '}
+              {data.meetingCount === 1 ? 'Meeting' : 'Meetings'}
+            </Badge>
+            <div className="flex flex-col gap-y-4">
+              <p className="text-lg font-medium">Instructions</p>
+              <p className="text-neutral-800">{data.instructions}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
