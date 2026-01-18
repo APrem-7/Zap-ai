@@ -5,6 +5,7 @@ import { LoadingState } from '@/components/loading-state';
 import { ErrorState } from '@/components/error-state';
 import { getQueryClient } from '@/utils/query-client';
 import { AgentIdHeaderView } from '@/modules/agents/ui/components/agent-id-header-view';
+import { UpdateAgentDialog } from '@/modules/agents/components/update-agent-dialog';
 import { GeneratedAvatar } from '@/components/generated-avatar';
 import { Badge } from '@/components/ui/badge';
 import { VideoIcon } from 'lucide-react';
@@ -12,6 +13,7 @@ import { deleteAgent } from '@/app/api/agents/agents';
 
 import { useRouter } from 'next/navigation';
 import { useConfirm } from '@/hooks/use-confirm';
+import { useState } from 'react';
 
 interface Props {
   agentId: string;
@@ -29,6 +31,7 @@ export const AgentIdView = ({ agentId }: Props) => {
     'Delete Agent',
 `Are you sure you want to delete agent ${data?.name}`
   );
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
   if (isLoading) {
     return (
       <LoadingState
@@ -46,9 +49,6 @@ export const AgentIdView = ({ agentId }: Props) => {
       />
     );
   }
-  const onEdit = async () => {
-    console.log('Edit agent', agentId);
-  };
 
   const onDelete = async () => {
     try {
@@ -86,11 +86,16 @@ export const AgentIdView = ({ agentId }: Props) => {
   return (
     <>
       <RemoveConfirmation />
+      <UpdateAgentDialog
+        open={isUpdateDialogOpen}
+        onOpenChange={setIsUpdateDialogOpen}
+        agentId={agentId}
+      />
       <div className="flex-1 py-4 px-4 md:px-8 flex flex-col gap-y-4">
         <AgentIdHeaderView
           agentId={agentId}
           agentName={data.name}
-          onEdit={onEdit}
+          onEdit={() => setIsUpdateDialogOpen(true)}
           onCancel={() => {}}
           onDelete={handelRemoveAgent}
         />
