@@ -59,7 +59,7 @@ export const AgentIdView = ({ agentId }: Props) => {
 
       await deleteAgent(agentId);
 
-      // Remove the query from cache (THIS IS MISSING!)
+      // Remove the query from cache
       queryClient.removeQueries({
         queryKey: ['agents', agentId],
       });
