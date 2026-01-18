@@ -208,9 +208,19 @@ export const deleteAgent = async (req: Request, res: Response) => {
 export const updateAgent = async (req: Request, res: Response) => {
   const { agentId } = req.params;
   try {
+
+    const parsed = agentInsertSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({
+        message: 'Invalid input',
+      });
+    }
+
+    const {name,instruction} = parsed.data;
+
     const [data] = await db
       .update(agents)
-      .set({ name: req.body.name, instructions: req.body.instruction })
+      .set({ name: name, instructions: instruction })
       .where(and(eq(agents.userId, req.user.id), eq(agents.id, agentId)))
       .returning();
 
