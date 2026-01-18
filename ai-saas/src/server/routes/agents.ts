@@ -6,6 +6,7 @@ import {
   getOneAgent,
   createAgents,
   deleteAgent,
+  updateAgent,
 } from '../controllers/agents.controller';
 
 const router = express.Router();
@@ -47,10 +48,20 @@ router.delete(
   '/:agentId',
   requireAuth,
   (req, res, next) => {
-    console.log('➕ POST /agents route matched');
+    console.log('➕ DELETE /agents route matched');
     next();
   },
   deleteAgent
+);
+
+router.put(
+  '/:agentId',
+  requireAuth,
+  (req, res, next) => {
+    console.log('➕ PUT/UPDATE /agents route matched');
+    next();
+  },
+ updateAgent
 );
 
 console.log('✅ Agents routes configured');
