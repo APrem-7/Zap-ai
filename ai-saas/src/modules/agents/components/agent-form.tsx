@@ -20,10 +20,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useState } from 'react';
 interface AgentFormProps {
-  onSuccess: () => {};
-  onError: () => {};
+  onSuccess: () => void;
+  onError: () => void;
   initialValues?: z.infer<typeof agentInsertSchema>;
-  onCancel?: () => {};
+  onCancel?: () => void;
   agentId?: string;
   isUpdate?: boolean;
 }
