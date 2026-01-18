@@ -42,21 +42,16 @@ export const AgentForm = ({
   const createAgentMutation = useMutation({
     mutationFn: createAgent,
 
-    onSuccess: async () => {
-      // 1️⃣ Refetch agent list
+    onSuccess: async (data) => {
       await queryClient.invalidateQueries({
         queryKey: ['agents'],
       });
 
-      // 2️⃣ Refetch single agent if editing
-      if (initialValues?.id) {
+      if (data?.id) {
         await queryClient.invalidateQueries({
-          queryKey: ['agent', initialValues.id],
+          queryKey: ['agent', data.id],
         });
       }
-
-      // 3️⃣ Optional callback
-      onSuccess?.();
     },
 
     onError: (error: Error) => {
@@ -114,10 +109,13 @@ export const AgentForm = ({
       } else {
         await createAgentMutation.mutateAsync(values);
       }
-      onSuccess();
     } catch (error) {
       console.error('Failed to submit form:', error);
-      toast.error(error.message || 'Something went wrong');
+      if (error instanceof Error) {
+        toast.error(error.message || 'Something went wrong');
+      } else {
+        toast.error('Something went wrong');
+      }
     }
   };
 
