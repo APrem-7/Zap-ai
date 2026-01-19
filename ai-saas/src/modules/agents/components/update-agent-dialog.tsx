@@ -2,6 +2,7 @@ import { ResponsiveDialog } from '@/components/responsive-dialog';
 import { AgentForm } from './agent-form';
 import { useQuery } from '@tanstack/react-query';
 import { getOneAgent } from '@/app/api/agents/agents';
+import { ErrorState } from '@/components/error-state';
 
 interface UpdateAgentDialogProps {
   open: boolean;
@@ -16,12 +17,21 @@ export const UpdateAgentDialog = ({
 }: UpdateAgentDialogProps) => {
   const {
     data: agent,
-    isLoading,
+    isError,
     error,
   } = useQuery({
     queryKey: ['agents', agentId],
     queryFn: () => getOneAgent(agentId),
   });
+
+  if(isError){
+    return <ErrorState title="Error loading agent" description={error.message || 'Please try again'} />
+  }
+
+  if(!agent){
+    return <ErrorState title="Agent not found" description="Please try again" />
+  }
+  
   return (
     <ResponsiveDialog
       title="Update Agent"
