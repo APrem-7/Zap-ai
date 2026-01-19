@@ -49,7 +49,7 @@ export const AgentForm = ({
 
       if (data?.id) {
         await queryClient.invalidateQueries({
-          queryKey: ['agent', data.id],
+          queryKey: ['agents', data.id],
         });
       }
       onSuccess?.();
@@ -76,7 +76,7 @@ export const AgentForm = ({
 
       if (agentId) {
         await queryClient.invalidateQueries({
-          queryKey: ['agent', agentId],
+          queryKey: ['agents', agentId],
         });
       }
 
