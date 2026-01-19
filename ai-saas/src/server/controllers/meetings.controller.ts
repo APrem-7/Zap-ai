@@ -118,7 +118,7 @@ export const createMeetings = async (req: Request, res: Response) => {
     console.log('🔍 Validating input with schema...');
     const input = meetingInsertSchema.parse(req.body); // 🔥 REAL SECURITY
     console.log('✅ Input validation passed');
-    console.log('💾 Inserting new agent into database...');
+    console.log('💾 Inserting new meeting into database...');
     const [data] = await db
       .insert(meetings)
       .values({
@@ -127,19 +127,19 @@ export const createMeetings = async (req: Request, res: Response) => {
         agentId: input.agentId,
       })
       .returning();
-    console.log(`✅ Successfully created agent with ID: ${data.id}`);
+    console.log(`✅ Successfully created meeting with ID: ${data.id}`);
     console.log(
-      `🗑️ Invalidating all agent search caches for user ${req.user.id}`
+      `🗑️ Invalidating all meeting search caches for user ${req.user.id}`
     );
     const pattern = `meetings:${req.user.id}:*`;
     await redis.invalidate(pattern);
 
-    console.log('✅ Agent creation complete');
-    return res.json(data) || { message: 'Failed to create agent' };
+    console.log('✅ Meeting creation complete');
+    return res.json(data) || { message: 'Failed to create meeting' };
   } catch (error) {
     console.error('❌ Error in createmeetings:', error);
     return res.status(500).json({
-      message: 'Failed to create agent',
+      message: 'Failed to create meeting',
     });
   }
 };
@@ -179,25 +179,25 @@ export const deleteMeeting = async (req: Request, res: Response) => {
   const { meetingId } = req.params;
 
   try {
-    const [removedAgent] = await db
+    const [removedMeeting] = await db
       .delete(meetings)
       .where(and(eq(meetings.userId, req.user.id), eq(meetings.id, meetingId)))
       .returning();
 
-    if (!removedAgent) {
+    if (!removedMeeting) {
       return res.status(404).json({
         message: 'Meeting not found',
       });
     }
 
     console.log(
-      `🗑️ Invalidating all agent search caches for user ${req.user.id}`
+      `🗑️ Invalidating all meeting search caches for user ${req.user.id}`
     );
     const pattern = `meetings:${req.user.id}:*`;
     await redis.invalidate(pattern);
 
     console.log(`🗑️ Successfully deleted meeting with ID: ${meetingId}`);
-    return res.json(removedAgent) || { message: 'Failed to delete meeting' };
+    return res.json(removedMeeting) || { message: 'Failed to delete meeting' };
   } catch (error) {
     console.error('❌ Error in deleteMeeting:', error);
     return res.status(500).json({
@@ -229,7 +229,7 @@ export const updateMeeting = async (req: Request, res: Response) => {
         message: 'Meeting not found',
       });
     }
-    
+
     console.log(
       `🗑️ Invalidating all meeting search caches for user ${req.user.id}`
     );
@@ -245,4 +245,3 @@ export const updateMeeting = async (req: Request, res: Response) => {
     });
   }
 };
-
