@@ -206,3 +206,37 @@ export const deleteMeeting = async (req: Request, res: Response) => {
   }
 };
 
+export const updateMeeting = async (req: Request, res: Response) => {
+  const { meetingId } = req.params;
+  try {
+    const parsed = meetingInsertSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({
+        message: 'Invalid input',
+      });
+    }
+
+    const { name, agentId } = parsed.data;
+
+    const [data] = await db
+      .update(meetings)
+      .set({ name: name, agentId: agentId })
+      .where(and(eq(meetings.userId, req.user.id), eq(meetings.id, meetingId)))
+      .returning();
+
+    console.log(
+      `🗑️ Invalidating all meeting search caches for user ${req.user.id}`
+    );
+    const pattern = `meetings:${req.user.id}:*`;
+    await redis.invalidate(pattern);
+
+    console.log(`🗑️ Successfully updated meeting with ID: ${meetingId}`);
+    return res.json(data) || { message: 'Failed to update meeting' };
+  } catch (error) {
+    console.error('❌ Error in updateMeeting:', error);
+    return res.status(500).json({
+      message: 'Failed to update meeting',
+    });
+  }
+};
+
