@@ -57,6 +57,7 @@ export const AgentForm = ({
 
     onError: (error: Error) => {
       toast.error(error.message || 'Something went wrong');
+      onError?.();
     },
   });
 
@@ -85,6 +86,7 @@ export const AgentForm = ({
 
     onError: (error: Error) => {
       toast.error(error.message || 'Something went wrong');
+      onError?.();
     },
   });
 
