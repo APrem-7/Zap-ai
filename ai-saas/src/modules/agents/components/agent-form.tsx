@@ -52,6 +52,7 @@ export const AgentForm = ({
           queryKey: ['agent', data.id],
         });
       }
+      onSuccess?.();
     },
 
     onError: (error: Error) => {
