@@ -103,22 +103,14 @@ export const AgentForm = ({
 
   const onSubmit = async (values: z.infer<typeof agentInsertSchema>) => {
     setAvatarSeed(values.name?.trim() || 'agent');
-    try {
-      if (isUpdate && agentId) {
-        await updateAgentMutation.mutateAsync({
-          agentId,
-          values,
-        });
-      } else {
-        await createAgentMutation.mutateAsync(values);
-      }
-    } catch (error) {
-      console.error('Failed to submit form:', error);
-      if (error instanceof Error) {
-        toast.error(error.message || 'Something went wrong');
-      } else {
-        toast.error('Something went wrong');
-      }
+
+    if (isUpdate && agentId) {
+      await updateAgentMutation.mutateAsync({
+        agentId,
+        values,
+      });
+    } else {
+      await createAgentMutation.mutateAsync(values);
     }
   };
 
