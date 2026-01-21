@@ -89,7 +89,7 @@ export const getMeetings = async (req: Request, res: Response) => {
     const responseData = {
       data: data,
       totalPages: totalPage,
-      totalmeetings: total.count,
+      totalMeetings: total.count,
       currentPage: pageNum,
       pageSize: pageSizeNum,
     };
@@ -111,14 +111,14 @@ export const getMeetings = async (req: Request, res: Response) => {
 };
 
 export const createMeetings = async (req: Request, res: Response) => {
-  console.log('➕ POST /meetings endpoint hit');
-  console.log(`👤 User ID: ${req.user.id}`);
-  console.log('📝 Request body:', req.body);
+  // console.log('➕ POST /meetings endpoint hit');
+  // console.log(`👤 User ID: ${req.user.id}`);
+  // console.log('📝 Request body:', req.body);
   try {
-    console.log('🔍 Validating input with schema...');
+    // console.log('🔍 Validating input with schema...');
     const input = meetingInsertSchema.parse(req.body); // 🔥 REAL SECURITY
-    console.log('✅ Input validation passed');
-    console.log('💾 Inserting new meeting into database...');
+    // console.log('✅ Input validation passed');
+    // console.log('💾 Inserting new meeting into database...');
     const [data] = await db
       .insert(meetings)
       .values({
@@ -127,14 +127,14 @@ export const createMeetings = async (req: Request, res: Response) => {
         agentId: input.agentId,
       })
       .returning();
-    console.log(`✅ Successfully created meeting with ID: ${data.id}`);
-    console.log(
-      `🗑️ Invalidating all meeting search caches for user ${req.user.id}`
-    );
+    // console.log(`✅ Successfully created meeting with ID: ${data.id}`);
+    // console.log(
+    //   `🗑️ Invalidating all meeting search caches for user ${req.user.id}`
+    // );
     const pattern = `meetings:${req.user.id}:*`;
     await redis.invalidate(pattern);
 
-    console.log('✅ Meeting creation complete');
+    // console.log('✅ Meeting creation complete');
     if (!data) {
       return res.status(500).json({ message: 'Failed to create meeting' });
     }
@@ -150,6 +150,9 @@ export const createMeetings = async (req: Request, res: Response) => {
 export const getOneMeeting = async (req: Request, res: Response) => {
   try {
     const { meetingId } = req.params;
+    if (!meetingId || typeof meetingId !== 'string') {
+      return res.status(400).json({ message: 'Invalid meeting ID' });
+    }
 
     const [data] = await db
       .select({
@@ -168,9 +171,6 @@ export const getOneMeeting = async (req: Request, res: Response) => {
     }
 
     console.log('✅ Successfully fetched meeting');
-    if (!data) {
-      return res.status(500).json({ message: 'Failed to fetch meeting' });
-    }
     return res.json(data);
   } catch (error) {
     console.error('❌ Error in getOneMeeting:', error);
@@ -182,6 +182,9 @@ export const getOneMeeting = async (req: Request, res: Response) => {
 
 export const deleteMeeting = async (req: Request, res: Response) => {
   const { meetingId } = req.params;
+  if (!meetingId || typeof meetingId !== 'string') {
+    return res.status(400).json({ message: 'Invalid meeting ID' });
+  }
 
   try {
     const [removedMeeting] = await db
@@ -195,16 +198,13 @@ export const deleteMeeting = async (req: Request, res: Response) => {
       });
     }
 
-    console.log(
-      `🗑️ Invalidating all meeting search caches for user ${req.user.id}`
-    );
+    // console.log(
+    //   `🗑️ Invalidating all meeting search caches for user ${req.user.id}`
+    // );
     const pattern = `meetings:${req.user.id}:*`;
     await redis.invalidate(pattern);
 
-    console.log(`🗑️ Successfully deleted meeting with ID: ${meetingId}`);
-    if (!removedMeeting) {
-      return res.status(500).json({ message: 'Failed to delete meeting' });
-    }
+    // console.log(`🗑️ Successfully deleted meeting with ID: ${meetingId}`);
     return res.json(removedMeeting);
   } catch (error) {
     console.error('❌ Error in deleteMeeting:', error);
@@ -216,6 +216,10 @@ export const deleteMeeting = async (req: Request, res: Response) => {
 
 export const updateMeeting = async (req: Request, res: Response) => {
   const { meetingId } = req.params;
+  if (!meetingId || typeof meetingId !== 'string') {
+    return res.status(400).json({ message: 'Invalid meeting ID' });
+  }
+
   try {
     const parsed = meetingInsertSchema.safeParse(req.body);
     if (!parsed.success) {
@@ -238,16 +242,13 @@ export const updateMeeting = async (req: Request, res: Response) => {
       });
     }
 
-    console.log(
-      `🗑️ Invalidating all meeting search caches for user ${req.user.id}`
-    );
+    // console.log(
+    //   `🗑️ Invalidating all meeting search caches for user ${req.user.id}`
+    // );
     const pattern = `meetings:${req.user.id}:*`;
     await redis.invalidate(pattern);
 
-    console.log(`🗑️ Successfully updated meeting with ID: ${meetingId}`);
-    if (!data) {
-      return res.status(500).json({ message: 'Failed to update meeting' });
-    }
+    // console.log(`🗑️ Successfully updated meeting with ID: ${meetingId}`);
     return res.json(data);
   } catch (error) {
     console.error('❌ Error in updateMeeting:', error);
