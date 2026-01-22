@@ -1,12 +1,12 @@
-import { MeetingsListHeader } from '@/modules/meetings/components/meetings-list-header';
-import { MeetingsView } from '@/modules/meetings/ui/views/meetings-view';
+
+import {MeetingView} from "@/modules/meetings/ui/meetings-view";
 
 const Page = () => {
   return (
     <>
-      <MeetingsListHeader />
+
       <div className="p-4 flex flex-col gap-y-4">
-        <MeetingsView />
+        <MeetingView />
       </div>
     </>
   );
