@@ -1,7 +1,7 @@
 import { db } from '@/db';
-import { meetings, meetingStatus } from '@/db/schema';
+import { meetings, meetingStatus, agents } from '@/db/schema';
 
-import { eq, ilike, count, and } from 'drizzle-orm';
+import { eq, ilike, count, and, sql, getTableColumns } from 'drizzle-orm';
 
 import { Request, Response } from 'express';
 
@@ -50,10 +50,16 @@ export const getMeetings = async (req: Request, res: Response) => {
 
     const data = await db
       .select({
-        id: meetings.id,
-        name: meetings.name,
+        // All meeting columns
+        ...getTableColumns(meetings),
+        // Duration calculation
+        duration:
+          sql<number>`EXTRACT(EPOCH FROM (${meetings.endedAt} - ${meetings.startedAt}))`.as(
+            'duration'
+          ),
       })
       .from(meetings)
+      .innerJoin(agents, eq(meetings.agentId, agents.id))
       .where(
         and(
           eq(meetings.userId, req.user.id),
@@ -75,6 +81,7 @@ export const getMeetings = async (req: Request, res: Response) => {
         count: count(),
       })
       .from(meetings)
+      .innerJoin(agents, eq(meetings.agentId, agents.id))
       .where(
         and(
           eq(meetings.userId, req.user.id),
