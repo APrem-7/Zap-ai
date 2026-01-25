@@ -8,7 +8,23 @@ export const meetingInsertSchema = z.object({
 export const meetingResponseSchema = z.object({
   id: z.string(),
   name: z.string(),
+  userId: z.string(),
   agentId: z.string(),
+  status: z.enum([
+    'upcoming',
+    'active',
+    'completed',
+    'processing',
+    'cancelled',
+  ]),
+  startedAt: z.string().nullable(),
+  endedAt: z.string().nullable(),
+  transcriptUrl: z.string().nullable(),
+  recordingUrl: z.string().nullable(),
+  summary: z.string().nullable(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  duration: z.number().nullable(),
 });
 
 export const meetingUpdateSchema = z.object({
