@@ -129,7 +129,7 @@ export const MeetingForm = ({
     if (isEdit && meetingId) {
       await updateMeetingMutation.mutateAsync({
         meetingId,
-        values,
+        values: values as z.infer<typeof meetingUpdateSchema>,
       });
     } else {
       await createMeetingMutation.mutateAsync(values);
