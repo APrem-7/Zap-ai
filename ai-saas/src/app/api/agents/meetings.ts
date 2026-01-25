@@ -1,5 +1,8 @@
 import { z } from 'zod';
-import { meetingInsertSchema } from '@/modules/meetings/schema';
+import {
+  meetingInsertSchema,
+  meetingUpdateSchema,
+} from '@/modules/meetings/schema';
 
 export const getMeetings = async (page?: number, pageSize?: number) => {
   const url = new URL('http://localhost:8000/meetings');
@@ -19,7 +22,7 @@ export const getMeetings = async (page?: number, pageSize?: number) => {
   });
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch agents: ${res.status}`);
+    throw new Error(`Failed to fetch meetings: ${res.status}`);
   }
 
   const res_data = await res.json();
@@ -52,9 +55,9 @@ export const createMeeting = async (
 //Update MeetingID needs MeetingId,name(updated),agentId(updated)
 export const updateMeeting = async (
   meetingId: string,
-  input: z.infer<typeof meetingInsertSchema>
+  input: z.infer<typeof meetingUpdateSchema>
 ) => {
-  const input_data = meetingInsertSchema.parse(input); // 👈 REAL SECURITY
+  const input_data = meetingUpdateSchema.parse(input); // 👈 REAL SECURITY
 
   const url = new URL(`http://localhost:8000/meetings/${meetingId}`);
 
@@ -68,9 +71,9 @@ export const updateMeeting = async (
   });
 
   if (!res.ok) {
-    throw new Error(`Failed to create meeting: ${res.status}`);
+    throw new Error(`Failed to update meeting: ${res.status}`);
   }
 
   const res_data = await res.json();
-  return res_data;              
+  return res_data;
 };

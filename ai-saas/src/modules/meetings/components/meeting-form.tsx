@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { createMeeting, updateMeeting } from '@/app/api/agents/meetings';
 import { fetchAgents } from '@/app/api/agents/agents';
-import { meetingInsertSchema } from '../schema';
+import { meetingInsertSchema, meetingUpdateSchema } from '../schema';
 
 import {
   Form,
@@ -81,7 +81,7 @@ export const MeetingForm = ({
       values,
     }: {
       meetingId: string;
-      values: z.infer<typeof meetingInsertSchema>;
+      values: z.infer<typeof meetingUpdateSchema>;
     }) => updateMeeting(meetingId, values),
 
     onSuccess: async () => {
@@ -126,7 +126,7 @@ export const MeetingForm = ({
   const onSubmit = async (values: z.infer<typeof meetingInsertSchema>) => {
     setAvatarSeed(values.name?.trim() || 'agent');
 
-    if (isUpdate && meetingId) {
+    if (isEdit && meetingId) {
       await updateMeetingMutation.mutateAsync({
         meetingId,
         values,
@@ -149,7 +149,7 @@ export const MeetingForm = ({
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="Enter agent name"
+                    placeholder="Enter meeting name"
                     onBlur={(e) => {
                       field.onBlur();
                       setAvatarSeed(e.target.value.trim() || 'agent');
