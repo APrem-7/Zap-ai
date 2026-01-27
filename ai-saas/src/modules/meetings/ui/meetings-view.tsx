@@ -4,6 +4,8 @@
 import { getMeetings } from '@/app/api/agents/meetings';
 import { useQuery } from '@tanstack/react-query';
 import { MeetingResponse } from '@/modules/meetings/schema';
+import { columns } from '../components/columns';        
+import { DataTable } from '../components/data-table';
 
 import { z } from 'zod';
 
@@ -23,10 +25,10 @@ export const MeetingView = () => {
           description="Please wait while we load the data"
         />
       )}
+
       {error && <ErrorState title="Error" description="Something went wrong" />}
-      {data?.data?.map((meeting: MeetingResponse) => (
-        <div key={meeting.id}>{meeting.name}</div>
-      ))}
+
+      {data && <DataTable columns={columns} data={data.data} />}
     </div>
   );
 };
