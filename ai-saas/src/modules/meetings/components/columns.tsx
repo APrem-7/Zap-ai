@@ -49,6 +49,12 @@ export const columns: ColumnDef<MeetingResponse>[] = [
         <span className="font-semibold capitalize transition-colors duration-200 hover:text-foreground/80">
           {row.original.name}
         </span>
+        <div className="flex items-center gap-x-2">
+          <CornerDownRightIcon className="size-4" />
+          <span className="text-xs text-muted-foreground">
+            {row.original.agentName}
+          </span>
+        </div>
       </div>
     ),
   },
