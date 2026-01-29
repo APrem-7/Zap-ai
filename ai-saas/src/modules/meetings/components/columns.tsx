@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import humanizeDuration from 'humanize-duration';
-import { format } from 'path';
+import { format } from 'date-fns';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -74,7 +74,7 @@ export const columns: ColumnDef<MeetingResponse>[] = [
 
         <span className="text-sm text-muted-foreground">
           {row.original.startedAt
-            ? formatDuration(row.original.startedAt, 'MMM d')
+            ? format(new Date(row.original.startedAt), 'MMM d')
             : ' '}
         </span>
       </div>
