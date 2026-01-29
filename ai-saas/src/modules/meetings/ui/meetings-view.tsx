@@ -4,6 +4,13 @@
 import { getMeetings } from '@/app/api/agents/meetings';
 import { useQuery } from '@tanstack/react-query';
 import { MeetingResponse } from '@/modules/meetings/schema';
+import { columns } from '../components/columns';
+import { DataTable } from '../components/data-table';
+import { EmptyState } from '@/components/empty-state';
+import { useRouter } from 'next/navigation';
+
+import { useQueryState, parseAsInteger } from 'nuqs';
+import { DataPagination } from '@/modules/agents/ui/components/data-pagination';
 
 import { z } from 'zod';
 
@@ -11,22 +18,60 @@ import { LoadingState } from '@/components/loading-state';
 import { ErrorState } from '@/components/error-state';
 
 export const MeetingView = () => {
+  const router = useRouter();
+  const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
+  const [pageSize] = useQueryState('pageSize', parseAsInteger.withDefault(7));
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ['meetings'],
-    queryFn: () => getMeetings(),
+    queryKey: ['meetings', page, pageSize],
+    queryFn: () => {
+      console.log('🌐 CLIENT fetching meetings in useQuery');
+      return getMeetings(page, pageSize);
+    },
+    staleTime: 5 * 60 * 1000, // ✅ 5 minutes - data is fresh
+    gcTime: 10 * 60 * 1000, // ✅ 10 minutes - keep in memory
   });
+
+  if (isLoading) {
+    return (
+      <LoadingState
+        title="Loading meetings"
+        description="Please wait while we fetch the meetings"
+      />
+    );
+  }
+
+  if (error) {
+    return (
+      <ErrorState
+        title="Error loading meetings"
+        description={error?.message || 'Please try again'}
+      />
+    );
+  }
+
   return (
-    <div>
-      {isLoading && (
-        <LoadingState
-          title="Loading..."
-          description="Please wait while we load the data"
-        />
+    <div className="animate-fade-smooth">
+      <DataTable
+        data={data?.data || []}
+        columns={columns}
+        onRowClick={(row) => {
+          router.push(`/meetings/${row.id}`);
+        }}
+      />
+      {data?.data && data.data.length === 0 && (
+        <div className="animate-slide-up">
+          <EmptyState
+            title="No meetings found"
+            description="Please create a meeting to get started"
+          />
+        </div>
       )}
-      {error && <ErrorState title="Error" description="Something went wrong" />}
-      {data?.data?.map((meeting: MeetingResponse) => (
-        <div key={meeting.id}>{meeting.name}</div>
-      ))}
+      <DataPagination
+        page={page}
+        totalPages={data?.totalPages || 1}
+        onPageChange={setPage}
+      />
     </div>
   );
 };

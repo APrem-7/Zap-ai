@@ -27,7 +27,7 @@ export const columns: ColumnDef<Agent>[] = [
       <div className="flex flex-col gap-y-1">
         <div className="flex items-center gap-x-2 group">
           <div className="transition-transform duration-200 group-hover:scale-105">
-            <GeneratedAvatar seed={row.original.name} variant="bottsNeutral" />
+            <GeneratedAvatar seed={row.original.id} variant="bottsNeutral" />
           </div>
           <span className="font-semibold capitalize transition-colors duration-200 group-hover:text-foreground/80">
             {row.original.name}
