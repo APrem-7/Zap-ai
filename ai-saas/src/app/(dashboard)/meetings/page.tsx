@@ -5,7 +5,7 @@ const Page = () => {
   return (
     <>
       <MeetingsListHeader />
-      <div className="p-2 flex flex-col gap-y-2">
+      <div className="px-4 md:px-8 pb-4 flex flex-col gap-y-2">
         <MeetingView />
       </div>
     </>
