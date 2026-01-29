@@ -18,7 +18,15 @@ export const MeetingsListHeader = () => {
       />
       <div className="py-4 px-4 md:px-8 flex flex-col gap-y-4">
         <div className="flex items-center justify-between">
-          <h5 className="font-medium text-xl">My Meetings</h5>
+          <div className="flex flex-col gap-y-1">
+            <h5 className="font-semibold text-2xl tracking-tight text-foreground animate-slide-in">
+              My Meetings
+            </h5>
+            <h3 className="text-sm text-muted-foreground animate-slide-in" style={{ animationDelay: '100ms' }}>
+              Manage and configure your meetings
+            </h3>
+          </div>
+
           <Button
             onClick={() => {
               setOpen(true);
