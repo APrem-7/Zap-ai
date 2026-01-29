@@ -45,7 +45,7 @@ export const MeetingView = () => {
     return (
       <ErrorState
         title="Error loading meetings"
-        description={error.message || 'Please try again'}
+        description={error?.message || 'Please try again'}
       />
     );
   }
