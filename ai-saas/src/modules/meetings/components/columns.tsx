@@ -4,7 +4,7 @@ import { GeneratedAvatar } from '@/components/generated-avatar';
 import { ColumnDef } from '@tanstack/react-table';
 
 import { type MeetingResponse } from '../schema';
-
+import { cn } from '@/lib/utils';
 import {
   CornerDownRightIcon,
   VideoIcon,
@@ -12,10 +12,21 @@ import {
   Loader2Icon,
   CircleCheckIcon,
   CircleXIcon,
+  ClockFadingIcon,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import humanizeDuration from 'humanize-duration';
+import { format } from 'path';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
+
+function formatDuration(seconds: number) {
+  return humanizeDuration(seconds * 1000, {
+    largest: 1,
+    round: true,
+    units: ['h', 'm', 's'],
+  });
+}
 
 const statusIconMap = {
   upcoming: ClockArrowUpIcon,
@@ -51,24 +62,65 @@ export const columns: ColumnDef<MeetingResponse>[] = [
         </span>
         <div className="flex items-center gap-x-2">
           <CornerDownRightIcon className="size-4" />
+          <GeneratedAvatar
+            seed={row.original.agentId}
+            variant="bottsNeutral"
+            className="size-4"
+          />
           <span className="text-xs text-muted-foreground">
             {row.original.agentName}
           </span>
         </div>
+
+        <span className="text-sm text-muted-foreground">
+          {row.original.startedAt
+            ? formatDuration(row.original.startedAt, 'MMM d')
+            : ' '}
+        </span>
       </div>
     ),
   },
   {
-    accessorKey: 'meetingcounts',
-    header: 'Meetings',
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => {
+      const Icon =
+        statusIconMap[row.original.status as keyof typeof statusIconMap];
+      // keyof typeof extracts valid keys from statusIconMap ("upcoming" | "active" | "completed" | "processing" | "cancelled")
+      // This ensures TypeScript only allows valid status values, preventing runtime errors
+      return (
+        <Badge
+          variant="outline"
+          className={cn(
+            'capitalize [&>svg]:size-4 text-muted-foreground',
+            statusColorMap[row.original.status as keyof typeof statusColorMap]
+          )}
+        >
+          <Icon
+            className={cn(
+              row.original.status === 'processing' && 'animate-spin'
+            )}
+          />
+          <span className="transition-colors duration-200 group-hover:text-foreground">
+            {row.original.status}
+          </span>
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: 'duration',
+    header: 'duration',
     cell: ({ row }) => (
       <Badge
         variant="outline"
-        className="flex items-center gap-x-2 [&>svg]:size-4 smooth-transition hover:shadow-sm hover:bg-accent/50 group"
+        className="capitalize [&>svg]:size-4 flex items-center gap-x-2 text-muted-foreground"
       >
-        <VideoIcon className="text-blue-700 transition-transform duration-200 group-hover:scale-110" />
+        <ClockFadingIcon className="text-blue-700" />
         <span className="transition-colors duration-200 group-hover:text-foreground">
-          5 Meetings
+          {row.original.duration
+            ? formatDuration(row.original.duration)
+            : 'No duration'}
         </span>
       </Badge>
     ),
