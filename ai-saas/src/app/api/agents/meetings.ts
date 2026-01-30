@@ -4,13 +4,28 @@ import {
   meetingUpdateSchema,
 } from '@/modules/meetings/schema';
 
-export const getMeetings = async (page?: number, pageSize?: number) => {
+export const getMeetings = async (
+  page?: number,
+  pageSize?: number,
+  search?: string,
+  status?: string,
+  agentName?: string
+) => {
   const url = new URL('http://localhost:8000/meetings');
   if (page) {
     url.searchParams.set('page', page.toString());
   }
   if (pageSize) {
     url.searchParams.set('pageSize', pageSize.toString());
+  }
+  if (search) {
+    url.searchParams.set('search', search.toString());
+  }
+  if (status) {
+    url.searchParams.set('status', status.toString());
+  }
+  if (agentName) {
+    url.searchParams.set('agentName', agentName.toString());
   }
 
   const res = await fetch(url, {
