@@ -1,12 +1,20 @@
 'use client';
 
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, SearchIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { NewMeetingDialog } from './new-meeting-dialog';
 import { useState } from 'react';
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupText,
+} from '@/components/ui/input-group';
 
 export const MeetingsListHeader = () => {
   const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
   return (
     <>
       <NewMeetingDialog
@@ -28,7 +36,19 @@ export const MeetingsListHeader = () => {
           </Button>
         </div>
 
-        <div className="flex items-center gap-x-2 p-1">TODO: Filters</div>
+        <InputGroup>
+          <InputGroupAddon>
+            <InputGroupText>
+              <SearchIcon />
+            </InputGroupText>
+          </InputGroupAddon>
+          <InputGroupInput
+            type="text"
+            placeholder="Search meetings..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </InputGroup>
       </div>
     </>
   );
