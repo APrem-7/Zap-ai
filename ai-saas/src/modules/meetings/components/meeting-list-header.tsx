@@ -14,6 +14,7 @@ import {
 export const MeetingsListHeader = () => {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  // TODO: Connect searchQuery to MeetingView component for filtering
 
   return (
     <>
