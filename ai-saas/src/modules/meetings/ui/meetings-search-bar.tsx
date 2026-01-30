@@ -4,11 +4,12 @@ import { useId, useState } from 'react';
 
 import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Search, X } from 'lucide-react';
+import { Search, X, ChevronsUpDownIcon } from 'lucide-react';
 
 export function MeetingsSearchBar() {
   const inputId = useId();
   const descriptionId = useId();
+  const statusId = useId();
   const [query, setQuery] = useState('');
 
   return (
@@ -17,40 +18,61 @@ export function MeetingsSearchBar() {
         <FieldLabel htmlFor={inputId} className="sr-only">
           Search meetings
         </FieldLabel>
+        <div className="flex flex-row gap-x-2 ">
+          <div className="relative max-width-[100px]">
+            {/* Search Icon */}
+            <Search className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
 
-        <div className="relative">
-          {/* Search Icon */}
-          <Search className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-
-          <Input
-            id={inputId}
-            type="search"
-            aria-describedby={descriptionId}
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Escape' && query) {
-                setQuery('');
-              }
-            }}
-            placeholder="Search meetings…"
-            className="h-9 pl-9 pr-8 text-sm rounded-lg bg-background shadow-sm border border-border/60 focus-visible:ring-2 focus-visible:ring-ring/20"
-          />
-
-          {query.length > 0 && (
-            <button
-              type="button"
-              aria-label="Clear search"
-              onClick={() => {
-                setQuery('');
+            <Input
+              id={inputId}
+              type="search"
+              aria-describedby={descriptionId}
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
               }}
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-sm p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape' && query) {
+                  setQuery('');
+                }
+              }}
+              placeholder="Search meetings…"
+              className="h-9 pl-9 pr-8 text-sm rounded-lg bg-background shadow-sm border border-border/60 focus-visible:ring-2 focus-visible:ring-ring/20"
+            />
+
+            {query.length > 0 && (
+              <button
+                type="button"
+                aria-label="Clear search"
+                onClick={() => {
+                  setQuery('');
+                }}
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-sm p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+
+          <div className="relative max-width-[100px]">
+            <ChevronsUpDownIcon className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              id={statusId}
+              type="search"
+              aria-describedby={descriptionId}
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape' && query) {
+                  setQuery('');
+                }
+              }}
+              placeholder="Status..."
+              className="h-9 pl-9 pr-8 text-sm rounded-lg bg-background shadow-sm border border-border/60 focus-visible:ring-2 focus-visible:ring-ring/20"
+            />
+          </div>
         </div>
 
         <FieldDescription id={descriptionId} className="sr-only">

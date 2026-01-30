@@ -87,6 +87,7 @@ export const getMeetings = async (req: Request, res: Response) => {
         and(
           eq(meetings.userId, req.user.id),
           search ? ilike(meetings.name, `%${search}%`) : undefined
+          
         )
       );
     // console.log(`📈 Total meetings count: ${total.count}`);
