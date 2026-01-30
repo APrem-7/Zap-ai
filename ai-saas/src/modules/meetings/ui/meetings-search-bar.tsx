@@ -10,16 +10,17 @@ export function MeetingsSearchBar() {
   const inputId = useId();
   const descriptionId = useId();
   const statusId = useId();
+  const agentNameId = useId();
   const [query, setQuery] = useState('');
 
   return (
-    <div className="w-full max-w-xs sm:max-w-sm">
+    <div className="w-full">
       <Field className="gap-0">
         <FieldLabel htmlFor={inputId} className="sr-only">
           Search meetings
         </FieldLabel>
-        <div className="flex flex-row gap-x-2 ">
-          <div className="relative max-width-[100px]">
+        <div className="flex flex-row gap-x-2 w-full max-w-2xl">
+          <div className="relative flex-1">
             {/* Search Icon */}
             <Search className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
 
@@ -37,7 +38,7 @@ export function MeetingsSearchBar() {
                 }
               }}
               placeholder="Search meetings…"
-              className="h-9 pl-9 pr-8 text-sm rounded-lg bg-background shadow-sm border border-border/60 focus-visible:ring-2 focus-visible:ring-ring/20"
+              className="h-9 w-full pl-9 pr-8 text-sm rounded-lg bg-background shadow-sm border border-border/60 focus-visible:ring-2 focus-visible:ring-ring/20"
             />
 
             {query.length > 0 && (
@@ -54,7 +55,7 @@ export function MeetingsSearchBar() {
             )}
           </div>
 
-          <div className="relative max-width-[100px]">
+          <div className="relative flex-1">
             <ChevronsUpDownIcon className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               id={statusId}
@@ -69,8 +70,27 @@ export function MeetingsSearchBar() {
                   setQuery('');
                 }
               }}
-              placeholder="Status..."
-              className="h-9 pl-9 pr-8 text-sm rounded-lg bg-background shadow-sm border border-border/60 focus-visible:ring-2 focus-visible:ring-ring/20"
+              placeholder="Status"
+              className="h-9 w-full pl-9 pr-8 text-sm rounded-lg bg-background shadow-sm border border-border/60 focus-visible:ring-2 focus-visible:ring-ring/20"
+            />
+          </div>
+          <div className="relative flex-1">
+            <ChevronsUpDownIcon className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              id={agentNameId}
+              type="agentName"
+              aria-describedby={descriptionId}
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape' && query) {
+                  setQuery('');
+                }
+              }}
+              placeholder="Agent"
+              className="h-9 w-full pl-9 pr-8 text-sm rounded-lg bg-background shadow-sm border border-border/60 focus-visible:ring-2 focus-visible:ring-ring/20"
             />
           </div>
         </div>
