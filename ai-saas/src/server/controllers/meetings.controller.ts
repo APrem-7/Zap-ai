@@ -5,7 +5,7 @@ import { eq, ilike, count, and, sql, getTableColumns } from 'drizzle-orm';
 
 import { Request, Response } from 'express';
 
-import { paginationSchema } from '@/modules/agents/pagination-schema';
+import { meetingQuerySchema } from '@/modules/meetings/schema';
 
 import { redis } from '@/lib/redis';
 
@@ -18,17 +18,23 @@ export const getMeetings = async (req: Request, res: Response) => {
 
   try {
     // Validate and parse query parameters using pagination schema
-    const validatedQuery = paginationSchema.parse({
+    const validatedQuery = meetingQuerySchema.parse({
       page: req.query.page ? Number(req.query.page) : undefined,
       pageSize: req.query.pageSize ? Number(req.query.pageSize) : undefined,
       search: req.query.search,
+      status: req.query.status,
+      agentName: req.query.agentName,
     });
 
-    const { page: pageNum, pageSize: pageSizeNum, search } = validatedQuery;
+    const {
+      page: pageNum,
+      pageSize: pageSizeNum,
+      search,
+      status,
+      agentName,
+    } = validatedQuery;
 
-    const cacheKey = `meetings:${req.user.id}:${
-      search || 'all'
-    }:${pageNum}:${pageSizeNum}`;
+    const cacheKey = `meetings:${req.user.id}:${search || 'all'}:${status || 'all'}:${agentName || 'all'}:${pageNum}:${pageSizeNum}`;
 
     // console.log(`💾 Checking cache for key: ${cacheKey}`);
     const cachedData = await redis.get(cacheKey);
@@ -64,7 +70,9 @@ export const getMeetings = async (req: Request, res: Response) => {
       .where(
         and(
           eq(meetings.userId, req.user.id),
-          search ? ilike(meetings.name, `%${search}%`) : undefined
+          search ? ilike(meetings.name, `%${search}%`) : undefined,
+          status ? ilike(meetings.status, `%${status}%`) : undefined,
+          agentName ? ilike(agents.name, `%${agentName}%`) : undefined,
         )
       )
       .limit(pageSizeNum)
@@ -86,8 +94,9 @@ export const getMeetings = async (req: Request, res: Response) => {
       .where(
         and(
           eq(meetings.userId, req.user.id),
-          search ? ilike(meetings.name, `%${search}%`) : undefined
-          
+          search ? ilike(meetings.name, `%${search}%`) : undefined,
+          status ? ilike(meetings.status, status) : undefined,
+          agentName ? ilike(agents.name, `%${agentName}%`) : undefined
         )
       );
     // console.log(`📈 Total meetings count: ${total.count}`);
