@@ -43,9 +43,8 @@ export const getMeetings = async (req: Request, res: Response) => {
     } = validatedQuery;
 
     // Type-safe status filtering
-    const statusFilter: MeetingStatus | undefined = status as
-      | MeetingStatus
-      | undefined;
+    const statusFilter = status;
+
 
     console.log(`🎯 Status filter: ${statusFilter || 'none'}`);
     console.log(`🎯 Search filter: ${search || 'none'}`);
