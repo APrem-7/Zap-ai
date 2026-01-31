@@ -5,9 +5,13 @@ import { Button } from '@/components/ui/button';
 import { NewMeetingDialog } from './new-meeting-dialog';
 import { useState } from 'react';
 import { MeetingsSearchBar } from '../ui/meetings-search-bar';
+import { useMeetingsFilters } from '../hooks/use-meetings-filters';
 
 export const MeetingsListHeader = () => {
   const [open, setOpen] = useState(false);
+  const { search, setSearch, status, setStatus, agentName, setAgentName } =
+    useMeetingsFilters();
+
   return (
     <>
       <NewMeetingDialog
@@ -41,7 +45,14 @@ export const MeetingsListHeader = () => {
         </div>
 
         <div className="flex items-center">
-          <MeetingsSearchBar />
+          <MeetingsSearchBar
+            search={search}
+            onSearchChange={setSearch}
+            status={status}
+            onStatusChange={setStatus}
+            agentName={agentName}
+            onAgentNameChange={setAgentName}
+          />
         </div>
       </div>
     </>
