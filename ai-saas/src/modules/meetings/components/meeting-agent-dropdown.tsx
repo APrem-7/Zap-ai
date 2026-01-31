@@ -97,11 +97,7 @@ export function AgentDropdown({
                 </>
               ) : (
                 <>
-                  <GeneratedAvatar
-                    seed={selectedAgentId}
-                    variant="bottsNeutral"
-                    className="mr-2 h-4 w-4 text-muted-foreground"
-                  />
+                  <Bot className="mr-2 h-4 w-4 text-muted-foreground" />
                   <span className="text-muted-foreground">Select Agent</span>
                 </>
               )}
