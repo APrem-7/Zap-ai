@@ -11,6 +11,13 @@ import { redis } from '@/lib/redis';
 
 import { meetingInsertSchema } from '@/modules/meetings/schema';
 
+type MeetingStatus =
+  | 'upcoming'
+  | 'active'
+  | 'completed'
+  | 'processing'
+  | 'cancelled';
+
 export const getMeetings = async (req: Request, res: Response) => {
   // console.log('📋 GET /meetings endpoint hit');
   // console.log(`👤 User ID: ${req.user.id}`);
@@ -33,6 +40,11 @@ export const getMeetings = async (req: Request, res: Response) => {
       status,
       agentId,
     } = validatedQuery;
+
+    // Type-safe status filtering
+    const statusFilter: MeetingStatus | undefined = status as
+      | MeetingStatus
+      | undefined;
 
     const cacheKey = `meetings:${req.user.id}:${search || 'all'}:${status || 'all'}:${agentId || 'all'}:${pageNum}:${pageSizeNum}`;
 
@@ -71,7 +83,7 @@ export const getMeetings = async (req: Request, res: Response) => {
         and(
           eq(meetings.userId, req.user.id),
           search ? ilike(meetings.name, `%${search}%`) : undefined,
-          status ? eq(meetings.status, status) : undefined,
+          statusFilter ? eq(meetings.status, statusFilter) : undefined,
           agentId ? eq(meetings.agentId, agentId) : undefined
         )
       )
@@ -95,7 +107,7 @@ export const getMeetings = async (req: Request, res: Response) => {
         and(
           eq(meetings.userId, req.user.id),
           search ? ilike(meetings.name, `%${search}%`) : undefined,
-          status ? eq(meetings.status, status) : undefined,
+          statusFilter ? eq(meetings.status, statusFilter) : undefined,
           agentId ? eq(meetings.agentId, agentId) : undefined
         )
       );
