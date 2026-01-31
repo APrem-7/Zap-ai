@@ -21,7 +21,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { AgentDropdown } from '@/modules/meetings/components/agent-dropdown';
+import { AgentDropdown } from '@/modules/meetings/components/meeting-agent-dropdown';
 
 interface MeetingsSearchBarProps {
   search: string;
