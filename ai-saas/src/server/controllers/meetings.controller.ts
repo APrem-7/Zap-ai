@@ -95,7 +95,7 @@ export const getMeetings = async (req: Request, res: Response) => {
         and(
           eq(meetings.userId, req.user.id),
           search ? ilike(meetings.name, `%${search}%`) : undefined,
-          status ? ilike(meetings.status, status) : undefined,
+          status ? eq(meetings.status, status) : undefined,
           agentName ? ilike(agents.name, `%${agentName}%`) : undefined
         )
       );
