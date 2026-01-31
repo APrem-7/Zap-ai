@@ -4,7 +4,23 @@ import { useId } from 'react';
 
 import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Search, X, ChevronsUpDownIcon } from 'lucide-react';
+import {
+  Search,
+  X,
+  ChevronsUpDownIcon,
+  Calendar,
+  CheckCircle,
+  PlayCircle,
+  Clock,
+  XCircle,
+} from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 
 interface MeetingsSearchBarProps {
   search: string;
@@ -14,6 +30,14 @@ interface MeetingsSearchBarProps {
   agentId: string;
   onAgentIdChange: (value: string) => void;
 }
+
+const statusOptions = [
+  { value: 'upcoming', label: 'Upcoming', icon: Calendar },
+  { value: 'completed', label: 'Completed', icon: CheckCircle },
+  { value: 'active', label: 'Active', icon: PlayCircle },
+  { value: 'processing', label: 'Processing', icon: Clock },
+  { value: 'cancelled', label: 'Cancelled', icon: XCircle },
+];
 
 export function MeetingsSearchBar({
   search,
@@ -27,6 +51,10 @@ export function MeetingsSearchBar({
   const descriptionId = useId();
   const statusId = useId();
   const agentIdId = useId();
+
+  const selectedStatus = statusOptions.find(
+    (option) => option.value === status
+  );
 
   return (
     <div className="w-full">
@@ -67,21 +95,55 @@ export function MeetingsSearchBar({
           </div>
 
           <div className="relative flex-1">
-            <ChevronsUpDownIcon className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              id={statusId}
-              type="search"
-              aria-describedby={descriptionId}
-              value={status}
-              onChange={(e) => onStatusChange(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Escape' && status) {
-                  onStatusChange('');
-                }
-              }}
-              placeholder="Status"
-              className="h-9 w-full pl-9 pr-8 text-sm rounded-lg bg-background shadow-sm border border-border/60 focus-visible:ring-2 focus-visible:ring-ring/20"
-            />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="h-9 w-full justify-between text-left font-normal"
+                  id={statusId}
+                >
+                  <div className="flex items-center">
+                    {selectedStatus ? (
+                      <>
+                        <selectedStatus.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                        <span className="text-muted-foreground">
+                          {selectedStatus.label}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-muted-foreground">Status</span>
+                    )}
+                  </div>
+                  <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="start">
+                {statusOptions.map((option) => (
+                  <DropdownMenuItem
+                    key={option.value}
+                    onClick={() => onStatusChange(option.value)}
+                    className="flex items-center cursor-pointer"
+                  >
+                    <option.icon className="mr-2 h-4 w-4" />
+                    {option.label}
+                    {status === option.value && (
+                      <div className="ml-auto w-4 h-4 flex items-center justify-center">
+                        <div className="w-2 h-2 bg-primary rounded-full" />
+                      </div>
+                    )}
+                  </DropdownMenuItem>
+                ))}
+                {/* Add separator and clear option */}
+                <div className="border-t my-1" />
+                <DropdownMenuItem
+                  onClick={() => onStatusChange('')}
+                  className="flex items-center cursor-pointer text-muted-foreground"
+                >
+                  <X className="mr-2 h-4 w-4" />
+                  Clear Status
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <div className="relative flex-1">
             <ChevronsUpDownIcon className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
