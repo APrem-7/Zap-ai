@@ -1,6 +1,6 @@
 'use client';
 
-import { useId } from 'react';
+import { useId, useState, useCallback } from 'react';
 
 import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
@@ -13,6 +13,8 @@ import {
   PlayCircle,
   Clock,
   XCircle,
+  RotateCcw,
+  Loader2,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -55,6 +57,15 @@ export function MeetingsSearchBar({
   const selectedStatus = statusOptions.find(
     (option) => option.value === status
   );
+
+  const handleClearAll = () => {
+    onSearchChange('');
+    onStatusChange('');
+    onAgentIdChange('');
+  };
+
+  const hasActiveFilters =
+    search.length > 0 || status.length > 0 || agentId.length > 0;
 
   return (
     <div className="w-full">
@@ -151,6 +162,19 @@ export function MeetingsSearchBar({
               onAgentChange={onAgentIdChange}
             />
           </div>
+
+          {hasActiveFilters && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleClearAll}
+              className="h-9 px-3 text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="Clear all filters"
+            >
+              <RotateCcw className="h-4 w-4 mr-1" />
+              Clear
+            </Button>
+          )}
         </div>
 
         <FieldDescription id={descriptionId} className="sr-only">
