@@ -11,6 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { ChevronsUpDownIcon, Bot, X } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { GeneratedAvatar } from '@/components/generated-avatar';
 
 interface Agent {
   id: string;
@@ -85,14 +86,22 @@ export function AgentDropdown({
             <div className="flex items-center">
               {selectedAgent ? (
                 <>
-                  <Bot className="mr-2 h-4 w-4 text-muted-foreground" />
+                  <GeneratedAvatar
+                    seed={selectedAgentId}
+                    variant="bottsNeutral"
+                    className="mr-2 h-4 w-4 text-muted-foreground"
+                  />
                   <span className="text-muted-foreground">
                     {selectedAgent.name}
                   </span>
                 </>
               ) : (
                 <>
-                  <Bot className="mr-2 h-4 w-4 text-muted-foreground" />
+                  <GeneratedAvatar
+                    seed={selectedAgentId}
+                    variant="bottsNeutral"
+                    className="mr-2 h-4 w-4 text-muted-foreground"
+                  />
                   <span className="text-muted-foreground">Select Agent</span>
                 </>
               )}
@@ -107,7 +116,11 @@ export function AgentDropdown({
               onClick={() => onAgentChange(agent.id)}
               className="flex items-center cursor-pointer"
             >
-              <Bot className="mr-2 h-4 w-4" />
+              <GeneratedAvatar
+                seed={agent.id}
+                variant="bottsNeutral"
+                className="mr-2 h-4 w-4 text-muted-foreground"
+              />
               {agent.name}
               {selectedAgentId === agent.id && (
                 <div className="ml-auto w-4 h-4 flex items-center justify-center">
