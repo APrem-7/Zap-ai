@@ -24,7 +24,7 @@ export const useMeetingsFilters = () => {
       throttleMs: 300,
       clearOnDefault: true,
     }),
-    agentName: parseAsString.withDefault('').withOptions({
+    agentId: parseAsString.withDefault('').withOptions({
       throttleMs: 300,
       clearOnDefault: true,
     }),
@@ -37,8 +37,8 @@ export const useMeetingsFilters = () => {
     setFilters((prev) => ({ ...prev, search, page: 1 }));
   const setStatus = (status: string) =>
     setFilters((prev) => ({ ...prev, status, page: 1 }));
-  const setAgentName = (agentName: string) =>
-    setFilters((prev) => ({ ...prev, agentName, page: 1 }));
+  const setAgentId = (agentId: string) =>
+    setFilters((prev) => ({ ...prev, agentId, page: 1 }));
 
   const resetFilters = () =>
     setFilters({
@@ -46,7 +46,7 @@ export const useMeetingsFilters = () => {
       pageSize: 7,
       search: '',
       status: '',
-      agentName: '',
+      agentId: '',
     });
 
   return {
@@ -55,7 +55,7 @@ export const useMeetingsFilters = () => {
     setPageSize,
     setSearch,
     setStatus,
-    setAgentName,
+    setAgentId,
     resetFilters,
   };
 };

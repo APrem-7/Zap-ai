@@ -19,14 +19,14 @@ import { ErrorState } from '@/components/error-state';
 
 export const MeetingView = () => {
   const router = useRouter();
-  const { page, pageSize, search, status, agentName, setPage } =
+  const { page, pageSize, search, status, agentId, setPage } =
     useMeetingsFilters();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['meetings', page, pageSize, search, status, agentName],
+    queryKey: ['meetings', page, pageSize, search, status, agentId],
     queryFn: () => {
       console.log('🌐 CLIENT fetching meetings in useQuery');
-      return getMeetings(page, pageSize, search, status, agentName);
+      return getMeetings(page, pageSize, search, status, agentId);
     },
     staleTime: 5 * 60 * 1000, // ✅ 5 minutes - data is fresh
     gcTime: 10 * 60 * 1000, // ✅ 10 minutes - keep in memory

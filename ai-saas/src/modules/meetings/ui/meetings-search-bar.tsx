@@ -11,8 +11,8 @@ interface MeetingsSearchBarProps {
   onSearchChange: (value: string) => void;
   status: string;
   onStatusChange: (value: string) => void;
-  agentName: string;
-  onAgentNameChange: (value: string) => void;
+  agentId: string;
+  onAgentIdChange: (value: string) => void;
 }
 
 export function MeetingsSearchBar({
@@ -20,13 +20,13 @@ export function MeetingsSearchBar({
   onSearchChange,
   status,
   onStatusChange,
-  agentName,
-  onAgentNameChange,
+  agentId,
+  onAgentIdChange,
 }: MeetingsSearchBarProps) {
   const inputId = useId();
   const descriptionId = useId();
   const statusId = useId();
-  const agentNameId = useId();
+  const agentIdId = useId();
 
   return (
     <div className="w-full">
@@ -86,17 +86,17 @@ export function MeetingsSearchBar({
           <div className="relative flex-1">
             <ChevronsUpDownIcon className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              id={agentNameId}
-              type="agentName"
+              id={agentIdId}
+              type="agentId"
               aria-describedby={descriptionId}
-              value={agentName}
-              onChange={(e) => onAgentNameChange(e.target.value)}
+              value={agentId}
+              onChange={(e) => onAgentIdChange(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Escape' && agentName) {
-                  onAgentNameChange('');
+                if (e.key === 'Escape' && agentId) {
+                  onAgentIdChange('');
                 }
               }}
-              placeholder="Agent"
+              placeholder="Agent ID"
               className="h-9 w-full pl-9 pr-8 text-sm rounded-lg bg-background shadow-sm border border-border/60 focus-visible:ring-2 focus-visible:ring-ring/20"
             />
           </div>

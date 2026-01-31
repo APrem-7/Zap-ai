@@ -23,7 +23,7 @@ export const getMeetings = async (req: Request, res: Response) => {
       pageSize: req.query.pageSize ? Number(req.query.pageSize) : undefined,
       search: req.query.search,
       status: req.query.status,
-      agentName: req.query.agentName,
+      agentId: req.query.agentId,
     });
 
     const {
@@ -31,10 +31,10 @@ export const getMeetings = async (req: Request, res: Response) => {
       pageSize: pageSizeNum,
       search,
       status,
-      agentName,
+      agentId,
     } = validatedQuery;
 
-    const cacheKey = `meetings:${req.user.id}:${search || 'all'}:${status || 'all'}:${agentName || 'all'}:${pageNum}:${pageSizeNum}`;
+    const cacheKey = `meetings:${req.user.id}:${search || 'all'}:${status || 'all'}:${agentId || 'all'}:${pageNum}:${pageSizeNum}`;
 
     // console.log(`💾 Checking cache for key: ${cacheKey}`);
     const cachedData = await redis.get(cacheKey);
@@ -72,7 +72,7 @@ export const getMeetings = async (req: Request, res: Response) => {
           eq(meetings.userId, req.user.id),
           search ? ilike(meetings.name, `%${search}%`) : undefined,
           status ? eq(meetings.status, status) : undefined,
-          agentName ? ilike(agents.name, `%${agentName}%`) : undefined
+          agentId ? eq(meetings.agentId, agentId) : undefined
         )
       )
       .limit(pageSizeNum)
@@ -96,7 +96,7 @@ export const getMeetings = async (req: Request, res: Response) => {
           eq(meetings.userId, req.user.id),
           search ? ilike(meetings.name, `%${search}%`) : undefined,
           status ? eq(meetings.status, status) : undefined,
-          agentName ? ilike(agents.name, `%${agentName}%`) : undefined
+          agentId ? eq(meetings.agentId, agentId) : undefined
         )
       );
     // console.log(`📈 Total meetings count: ${total.count}`);

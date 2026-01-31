@@ -9,7 +9,7 @@ export const getMeetings = async (
   pageSize?: number,
   search?: string,
   status?: string,
-  agentName?: string,
+  agentId?: string
 ) => {
   const url = new URL('http://localhost:8000/meetings');
   if (page) {
@@ -18,14 +18,14 @@ export const getMeetings = async (
   if (pageSize) {
     url.searchParams.set('pageSize', pageSize.toString());
   }
-  if(search){
+  if (search) {
     url.searchParams.set('search', search);
   }
-  if(status){
+  if (status) {
     url.searchParams.set('status', status);
   }
-  if(agentName){
-    url.searchParams.set('agentName', agentName);
+  if (agentId) {
+    url.searchParams.set('agentId', agentId);
   }
   const res = await fetch(url, {
     method: 'GET',
@@ -92,25 +92,28 @@ export const updateMeeting = async (
   return res_data;
 };
 
-export const searchMeetings = async (search?: string,status?:string,agentName?:string) => {
+export const searchMeetings = async (
+  search?: string,
+  status?: string,
+  agentName?: string
+) => {
   const url = new URL('http://localhost:8000/meetings');
   if (search) {
     url.searchParams.set('search', search);
   }
-  if(status){
+  if (status) {
     url.searchParams.set('status', status);
   }
-  if(agentName){
+  if (agentName) {
     url.searchParams.set('agentName', agentName);
   }
-
 
   const res = await fetch(url, {
     method: 'GET',
     credentials: 'include', // IMPORTANT: sends cookies for session
     headers: {
       'Content-Type': 'application/json',
-    }
+    },
   });
 
   if (!res.ok) {

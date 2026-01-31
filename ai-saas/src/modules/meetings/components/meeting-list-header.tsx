@@ -9,7 +9,7 @@ import { useMeetingsFilters } from '../hooks/use-meetings-filters';
 
 export const MeetingsListHeader = () => {
   const [open, setOpen] = useState(false);
-  const { search, setSearch, status, setStatus, agentName, setAgentName } =
+  const { search, setSearch, status, setStatus, agentId, setAgentId } =
     useMeetingsFilters();
 
   return (
@@ -50,8 +50,8 @@ export const MeetingsListHeader = () => {
             onSearchChange={setSearch}
             status={status}
             onStatusChange={setStatus}
-            agentName={agentName}
-            onAgentNameChange={setAgentName}
+            agentId={agentId}
+            onAgentIdChange={setAgentId}
           />
         </div>
       </div>
