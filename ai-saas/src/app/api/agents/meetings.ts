@@ -4,7 +4,13 @@ import {
   meetingUpdateSchema,
 } from '@/modules/meetings/schema';
 
-export const getMeetings = async (page?: number, pageSize?: number) => {
+export const getMeetings = async (
+  page?: number,
+  pageSize?: number,
+  search?: string,
+  status?: string,
+  agentId?: string
+) => {
   const url = new URL('http://localhost:8000/meetings');
   if (page) {
     url.searchParams.set('page', page.toString());
@@ -12,7 +18,15 @@ export const getMeetings = async (page?: number, pageSize?: number) => {
   if (pageSize) {
     url.searchParams.set('pageSize', pageSize.toString());
   }
-
+  if (search) {
+    url.searchParams.set('search', search);
+  }
+  if (status) {
+    url.searchParams.set('status', status);
+  }
+  if (agentId) {
+    url.searchParams.set('agentId', agentId);
+  }
   const res = await fetch(url, {
     method: 'GET',
     credentials: 'include', // IMPORTANT: sends cookies for session
@@ -77,3 +91,4 @@ export const updateMeeting = async (
   const res_data = await res.json();
   return res_data;
 };
+

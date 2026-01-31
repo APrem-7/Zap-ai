@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/form';
 
 import { GeneratedAvatar } from '@/components/generated-avatar';
-import { AgentSearchButton } from './agent-search';
+import { AgentSearchButton } from './meeting-agent-search';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { NewAgentDialog } from '@/modules/agents/components/new-agent-dialog';
