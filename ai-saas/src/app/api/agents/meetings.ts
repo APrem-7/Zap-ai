@@ -7,6 +7,9 @@ import {
 export const getMeetings = async (
   page?: number,
   pageSize?: number,
+  search?: string,
+  status?: string,
+  agentName?: string,
 ) => {
   const url = new URL('http://localhost:8000/meetings');
   if (page) {
@@ -15,7 +18,15 @@ export const getMeetings = async (
   if (pageSize) {
     url.searchParams.set('pageSize', pageSize.toString());
   }
-
+  if(search){
+    url.searchParams.set('search', search);
+  }
+  if(status){
+    url.searchParams.set('status', status);
+  }
+  if(agentName){
+    url.searchParams.set('agentName', agentName);
+  }
   const res = await fetch(url, {
     method: 'GET',
     credentials: 'include', // IMPORTANT: sends cookies for session
