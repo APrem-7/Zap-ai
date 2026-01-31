@@ -21,6 +21,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
+import { AgentDropdown } from '@/modules/meetings/components/agent-dropdown';
 
 interface MeetingsSearchBarProps {
   search: string;
@@ -50,7 +51,6 @@ export function MeetingsSearchBar({
   const inputId = useId();
   const descriptionId = useId();
   const statusId = useId();
-  const agentIdId = useId();
 
   const selectedStatus = statusOptions.find(
     (option) => option.value === status
@@ -146,20 +146,9 @@ export function MeetingsSearchBar({
             </DropdownMenu>
           </div>
           <div className="relative flex-1">
-            <ChevronsUpDownIcon className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              id={agentIdId}
-              type="agentId"
-              aria-describedby={descriptionId}
-              value={agentId}
-              onChange={(e) => onAgentIdChange(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Escape' && agentId) {
-                  onAgentIdChange('');
-                }
-              }}
-              placeholder="Agent ID"
-              className="h-9 w-full pl-9 pr-8 text-sm rounded-lg bg-background shadow-sm border border-border/60 focus-visible:ring-2 focus-visible:ring-ring/20"
+            <AgentDropdown
+              selectedAgentId={agentId}
+              onAgentChange={onAgentIdChange}
             />
           </div>
         </div>
