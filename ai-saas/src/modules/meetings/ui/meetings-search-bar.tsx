@@ -11,7 +11,11 @@ export function MeetingsSearchBar() {
   const descriptionId = useId();
   const statusId = useId();
   const agentNameId = useId();
-  const [query, setQuery] = useState('');
+  // Root cause: All three inputs were sharing the same 'query' state variable
+  // Fix: Create separate state for each input to ensure independent control
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusQuery, setStatusQuery] = useState('');
+  const [agentQuery, setAgentQuery] = useState('');
 
   return (
     <div className="w-full">
@@ -28,25 +32,25 @@ export function MeetingsSearchBar() {
               id={inputId}
               type="search"
               aria-describedby={descriptionId}
-              value={query}
+              value={searchQuery}
               onChange={(e) => {
-                setQuery(e.target.value);
+                setSearchQuery(e.target.value);
               }}
               onKeyDown={(e) => {
-                if (e.key === 'Escape' && query) {
-                  setQuery('');
+                if (e.key === 'Escape' && searchQuery) {
+                  setSearchQuery('');
                 }
               }}
               placeholder="Search meetings…"
               className="h-9 w-full pl-9 pr-8 text-sm rounded-lg bg-background shadow-sm border border-border/60 focus-visible:ring-2 focus-visible:ring-ring/20"
             />
 
-            {query.length > 0 && (
+            {searchQuery.length > 0 && (
               <button
                 type="button"
                 aria-label="Clear search"
                 onClick={() => {
-                  setQuery('');
+                  setSearchQuery('');
                 }}
                 className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-sm p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
@@ -61,13 +65,13 @@ export function MeetingsSearchBar() {
               id={statusId}
               type="search"
               aria-describedby={descriptionId}
-              value={query}
+              value={statusQuery}
               onChange={(e) => {
-                setQuery(e.target.value);
+                setStatusQuery(e.target.value);
               }}
               onKeyDown={(e) => {
-                if (e.key === 'Escape' && query) {
-                  setQuery('');
+                if (e.key === 'Escape' && statusQuery) {
+                  setStatusQuery('');
                 }
               }}
               placeholder="Status"
@@ -80,13 +84,13 @@ export function MeetingsSearchBar() {
               id={agentNameId}
               type="agentName"
               aria-describedby={descriptionId}
-              value={query}
+              value={agentQuery}
               onChange={(e) => {
-                setQuery(e.target.value);
+                setAgentQuery(e.target.value);
               }}
               onKeyDown={(e) => {
-                if (e.key === 'Escape' && query) {
-                  setQuery('');
+                if (e.key === 'Escape' && agentQuery) {
+                  setAgentQuery('');
                 }
               }}
               placeholder="Agent"
