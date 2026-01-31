@@ -15,7 +15,7 @@ type MeetingQuery = z.infer<typeof meetingQuerySchema>;
 export const useMeetingsFilters = () => {
   const [filters, setFilters] = useQueryStates({
     page: parseAsInteger.withDefault(1),
-    pageSize: parseAsInteger.withDefault(7),
+    pageSize: parseAsInteger.withDefault(10),
     search: parseAsString.withDefault('').withOptions({
       throttleMs: 300, // Built-in debouncing with nuqs
       clearOnDefault: true,
@@ -43,7 +43,7 @@ export const useMeetingsFilters = () => {
   const resetFilters = () =>
     setFilters({
       page: 1,
-      pageSize: 7,
+      pageSize: 10,
       search: '',
       status: '',
       agentId: '',
