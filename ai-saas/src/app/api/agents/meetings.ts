@@ -92,34 +92,3 @@ export const updateMeeting = async (
   return res_data;
 };
 
-export const searchMeetings = async (
-  search?: string,
-  status?: string,
-  agentName?: string
-) => {
-  const url = new URL('http://localhost:8000/meetings');
-  if (search) {
-    url.searchParams.set('search', search);
-  }
-  if (status) {
-    url.searchParams.set('status', status);
-  }
-  if (agentName) {
-    url.searchParams.set('agentName', agentName);
-  }
-
-  const res = await fetch(url, {
-    method: 'GET',
-    credentials: 'include', // IMPORTANT: sends cookies for session
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!res.ok) {
-    throw new Error(`Failed to search  meetings: ${res.status}`);
-  }
-
-  const res_data = await res.json();
-  return res_data;
-};
