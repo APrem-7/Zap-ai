@@ -2,6 +2,7 @@ import { useQueryStates } from 'nuqs';
 import { parseAsInteger, parseAsString } from 'nuqs';
 import { z } from 'zod';
 import { meetingQuerySchema } from '../schema';
+import { useDebouncedValue } from '@/hooks/use-debounce-value';
 
 // Extract types from existing schema
 type MeetingStatus =
@@ -17,15 +18,12 @@ export const useMeetingsFilters = () => {
     page: parseAsInteger.withDefault(1),
     pageSize: parseAsInteger.withDefault(10),
     search: parseAsString.withDefault('').withOptions({
-      throttleMs: 300, // Built-in debouncing with nuqs
       clearOnDefault: true,
     }),
     status: parseAsString.withDefault('').withOptions({
-      throttleMs: 300,
       clearOnDefault: true,
     }),
     agentId: parseAsString.withDefault('').withOptions({
-      throttleMs: 300,
       clearOnDefault: true,
     }),
   });
@@ -49,8 +47,26 @@ export const useMeetingsFilters = () => {
       agentId: '',
     });
 
+  // Combine filter values into a single object for debouncing
+  // This prevents race conditions by debouncing the entire filters object
+  const filterObject = {
+    search: filters.search,
+    status: filters.status,
+    agentId: filters.agentId,
+  };
+
+  // Debounce the entire filters object to prevent race conditions
+  // This ensures only ONE query runs after filters settle for 300ms
+  const debouncedFilters = useDebouncedValue(filterObject, 300);
+
   return {
-    ...filters,
+    page: filters.page,
+    pageSize: filters.pageSize,
+    search: filters.search,
+    status: filters.status,
+    agentId: filters.agentId,
+    // Expose debounced filters for React Query
+    debouncedFilters,
     setPage,
     setPageSize,
     setSearch,
