@@ -8,8 +8,8 @@ import { columns } from '../components/columns';
 import { DataTable } from '../components/data-table';
 import { EmptyState } from '@/components/empty-state';
 import { useRouter } from 'next/navigation';
+import { useMeetingsFilters } from '../hooks/use-meetings-filters';
 
-import { useQueryState, parseAsInteger } from 'nuqs';
 import { DataPagination } from '@/modules/agents/ui/components/data-pagination';
 
 import { z } from 'zod';
@@ -19,14 +19,19 @@ import { ErrorState } from '@/components/error-state';
 
 export const MeetingView = () => {
   const router = useRouter();
-  const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
-  const [pageSize] = useQueryState('pageSize', parseAsInteger.withDefault(7));
+  const { page, pageSize, debouncedFilters, setPage } = useMeetingsFilters();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['meetings', page, pageSize],
+    queryKey: ['meetings', page, pageSize, debouncedFilters],
     queryFn: () => {
       console.log('🌐 CLIENT fetching meetings in useQuery');
-      return getMeetings(page, pageSize);
+      return getMeetings(
+        page,
+        pageSize,
+        debouncedFilters.search,
+        debouncedFilters.status,
+        debouncedFilters.agentId
+      );
     },
     staleTime: 5 * 60 * 1000, // ✅ 5 minutes - data is fresh
     gcTime: 10 * 60 * 1000, // ✅ 10 minutes - keep in memory

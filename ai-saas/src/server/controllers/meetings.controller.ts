@@ -5,36 +5,60 @@ import { eq, ilike, count, and, sql, getTableColumns } from 'drizzle-orm';
 
 import { Request, Response } from 'express';
 
-import { paginationSchema } from '@/modules/agents/pagination-schema';
+import { meetingQuerySchema } from '@/modules/meetings/schema';
 
 import { redis } from '@/lib/redis';
 
 import { meetingInsertSchema } from '@/modules/meetings/schema';
 
+// Use the meeting status enum from database schema
+type MeetingStatus = (typeof meetingStatus.enumValues)[number];
+
 export const getMeetings = async (req: Request, res: Response) => {
-  // console.log('📋 GET /meetings endpoint hit');
-  // console.log(`👤 User ID: ${req.user.id}`);
-  // console.log(`🔍 Search query: ${req.query.search || 'none'}`);
+  console.log('📋 GET /meetings endpoint hit');
+  console.log(`👤 User ID: ${req.user.id}`);
+  console.log(`🔍 Raw query params:`, req.query);
+  console.log(`🔍 Search query: ${req.query.search || 'none'}`);
+  console.log(`🔍 Status query: ${req.query.status || 'none'}`);
+  console.log(`🔍 AgentId query: ${req.query.agentId || 'none'}`);
 
   try {
     // Validate and parse query parameters using pagination schema
-    const validatedQuery = paginationSchema.parse({
+    const validatedQuery = meetingQuerySchema.parse({
       page: req.query.page ? Number(req.query.page) : undefined,
       pageSize: req.query.pageSize ? Number(req.query.pageSize) : undefined,
       search: req.query.search,
+      status: req.query.status,
+      agentId: req.query.agentId,
     });
 
-    const { page: pageNum, pageSize: pageSizeNum, search } = validatedQuery;
+    console.log(`✅ Validated query:`, validatedQuery);
 
-    const cacheKey = `meetings:${req.user.id}:${
-      search || 'all'
-    }:${pageNum}:${pageSizeNum}`;
+    const {
+      page: pageNum,
+      pageSize: pageSizeNum,
+      search,
+      status,
+      agentId,
+    } = validatedQuery;
+
+    // Type-safe status filtering
+    const statusFilter = status;
+
+
+    console.log(`🎯 Status filter: ${statusFilter || 'none'}`);
+    console.log(`🎯 Search filter: ${search || 'none'}`);
+    console.log(`🎯 AgentId filter: ${agentId || 'none'}`);
+
+    const cacheKey = `meetings:${req.user.id}:${search || 'all'}:${status || 'all'}:${agentId || 'all'}:${pageNum}:${pageSizeNum}`;
+
+    console.log(`💾 Cache key: ${cacheKey}`);
 
     // console.log(`💾 Checking cache for key: ${cacheKey}`);
     const cachedData = await redis.get(cacheKey);
 
     if (cachedData) {
-      // console.log('🎯 Cache HIT - returning cached meetings data');
+      console.log('🎯 Cache HIT - returning cached meetings data');
       // Data is in cache, return it
       return res.json(cachedData);
     }
@@ -64,17 +88,15 @@ export const getMeetings = async (req: Request, res: Response) => {
       .where(
         and(
           eq(meetings.userId, req.user.id),
-          search ? ilike(meetings.name, `%${search}%`) : undefined
+          search ? ilike(meetings.name, `%${search}%`) : undefined,
+          statusFilter ? eq(meetings.status, statusFilter) : undefined,
+          agentId ? eq(meetings.agentId, agentId) : undefined
         )
       )
       .limit(pageSizeNum)
       .offset(offset);
 
-    // console.log(`📊 Found meetings:`, data);
-    // console.log(`📊 Data type: ${typeof data}`);
-    // console.log(`📊 Is array? ${Array.isArray(data)}`);
-    // console.log(`📊 Data length: ${data.length}`);
-    // console.log(`📊 First item:`, data[0]);
+    console.log(`📊 Found ${data.length} meetings in database`);
 
     // console.log('🔢 Counting total meetings for pagination...');
     const [total] = await db
@@ -86,7 +108,9 @@ export const getMeetings = async (req: Request, res: Response) => {
       .where(
         and(
           eq(meetings.userId, req.user.id),
-          search ? ilike(meetings.name, `%${search}%`) : undefined
+          search ? ilike(meetings.name, `%${search}%`) : undefined,
+          statusFilter ? eq(meetings.status, statusFilter) : undefined,
+          agentId ? eq(meetings.agentId, agentId) : undefined
         )
       );
     // console.log(`📈 Total meetings count: ${total.count}`);
