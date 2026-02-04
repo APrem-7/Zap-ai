@@ -7,6 +7,7 @@ import { ErrorState } from '@/components/error-state';
 import { LoadingState } from '@/components/loading-state';
 import { json } from 'zod';
 import { MeetingIdHeaderView } from './MeetingIdHeaderView';
+import { MeetingDetailsCard } from '@/modules/meetings/components/meeting-details-card';
 
 interface Props {
   meetingId: string;
@@ -47,8 +48,13 @@ export const MeetingsIdView = ({ meetingId }: Props) => {
           onCancel={() => {}}
           onDelete={() => {}}
         />
+
+        <MeetingDetailsCard
+          meetingId={meetingId}
+          meetingName={data.name}
+          meetingAgentName={data.agentName}
+        />
       </div>
-      <div>{JSON.stringify(data)}</div>
     </>
   );
 };
