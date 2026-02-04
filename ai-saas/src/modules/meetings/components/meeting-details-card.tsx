@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { GeneratedAvatar } from '@/components/generated-avatar';
-import { PlayIcon, UserIcon } from 'lucide-react';
+import { PlayIcon, UserIcon, CalendarIcon } from 'lucide-react';
 
 interface MeetingDetailsCardProps {
   meetingAgentName: string;
@@ -56,12 +56,18 @@ export const MeetingDetailsCard = ({
               Click the button below to begin your meeting
             </p>
             <div className="flex justify-center py-5">
-              <Button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow-md mr-2">
+              <Button
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow-md mr-2"
+                onClick={() => {}}
+              >
                 <PlayIcon className="h-3 w-3 mr-1" />
                 Start Meeting
               </Button>
-              <Button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow-md">
-                <PlayIcon className="h-3 w-3 mr-1" />
+              <Button
+                className="bg-[#fab81e] hover:bg-[#fab81e] text-white px-4 py-2 rounded-lg font-semibold shadow-md"
+                onClick={() => {}}
+              >
+                <CalendarIcon className="h-3 w-3 mr-1" />
                 Schedule
               </Button>
             </div>
