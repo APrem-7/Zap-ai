@@ -10,12 +10,16 @@ interface MeetingDetailsCardProps {
   meetingAgentName: string;
   meetingId: string;
   meetingName: string;
+  onStartMeeting: () => void;
+  onScheduleMeeting: () => void;
 }
 
 export const MeetingDetailsCard = ({
   meetingAgentName,
   meetingId,
   meetingName,
+  onStartMeeting,
+  onScheduleMeeting,
 }: MeetingDetailsCardProps) => {
   return (
     <Card className="flex-col">
@@ -58,14 +62,14 @@ export const MeetingDetailsCard = ({
             <div className="flex justify-center py-5">
               <Button
                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow-md mr-2"
-                onClick={() => {}}
+                onClick={onStartMeeting}
               >
                 <PlayIcon className="h-3 w-3 mr-1" />
                 Start Meeting
               </Button>
               <Button
                 className="bg-[#fab81e] hover:bg-[#fab81e] text-white px-4 py-2 rounded-lg font-semibold shadow-md"
-                onClick={() => {}}
+                onClick={onScheduleMeeting}
               >
                 <CalendarIcon className="h-3 w-3 mr-1" />
                 Schedule
