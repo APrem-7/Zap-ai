@@ -4,11 +4,11 @@
 import { getMeetings } from '@/app/api/agents/meetings';
 import { useQuery } from '@tanstack/react-query';
 import { MeetingResponse } from '@/modules/meetings/schema';
-import { columns } from '../components/columns';
-import { DataTable } from '../components/data-table';
+import { columns } from '../../components/columns';
+import { DataTable } from '../../components/data-table';
 import { EmptyState } from '@/components/empty-state';
 import { useRouter } from 'next/navigation';
-import { useMeetingsFilters } from '../hooks/use-meetings-filters';
+import { useMeetingsFilters } from '../../hooks/use-meetings-filters';
 
 import { DataPagination } from '@/modules/agents/ui/components/data-pagination';
 

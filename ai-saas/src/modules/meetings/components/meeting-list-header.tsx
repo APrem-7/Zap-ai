@@ -4,7 +4,7 @@ import { PlusIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { NewMeetingDialog } from './new-meeting-dialog';
 import { useState } from 'react';
-import { MeetingsSearchBar } from '../ui/meetings-search-bar';
+import { MeetingsSearchBar } from '../ui/components/meetings-search-bar';
 import { useMeetingsFilters } from '../hooks/use-meetings-filters';
 
 export const MeetingsListHeader = () => {

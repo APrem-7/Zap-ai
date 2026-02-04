@@ -1,5 +1,4 @@
-import { MeetingsIdView } from '@/modules/meetings/ui/meetingsId-view';
-
+import { MeetingsIdView } from '@/modules/meetings/ui/views/meetingsId-view';
 
 interface Props {
   params: Promise<{ meetingId: string }>;

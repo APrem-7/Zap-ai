@@ -6,7 +6,7 @@ import { getOneMeeting } from '@/app/api/agents/meetings';
 import { ErrorState } from '@/components/error-state';
 import { LoadingState } from '@/components/loading-state';
 import { json } from 'zod';
-import { MeetingIdHeaderView } from '../components/MeetingIdHeaderView';
+import { MeetingIdHeaderView } from './MeetingIdHeaderView';
 
 interface Props {
   meetingId: string;
