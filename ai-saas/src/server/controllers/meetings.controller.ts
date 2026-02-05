@@ -1,5 +1,5 @@
 import { db } from '@/db';
-import { meetings, meetingStatus, agents } from '@/db/schema';
+import { meetings, meetingStatus, agents, user } from '@/db/schema';
 
 import { eq, ilike, count, and, sql, getTableColumns } from 'drizzle-orm';
 
@@ -44,7 +44,6 @@ export const getMeetings = async (req: Request, res: Response) => {
 
     // Type-safe status filtering
     const statusFilter = status;
-
 
     console.log(`🎯 Status filter: ${statusFilter || 'none'}`);
     console.log(`🎯 Search filter: ${search || 'none'}`);
@@ -191,8 +190,12 @@ export const getOneMeeting = async (req: Request, res: Response) => {
         id: meetings.id,
         name: meetings.name,
         agentId: meetings.agentId,
+        agentName: agents.name,
+        userName: user.name,
       })
       .from(meetings)
+      .innerJoin(agents, eq(meetings.agentId, agents.id))
+      .innerJoin(user, eq(meetings.userId, user.id))
       .where(and(eq(meetings.userId, req.user.id), eq(meetings.id, meetingId)))
       .limit(1);
 

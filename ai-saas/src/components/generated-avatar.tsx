@@ -1,5 +1,10 @@
 import { createAvatar } from '@dicebear/core';
-import { adventurer, botttsNeutral, initials } from '@dicebear/collection';
+import {
+  adventurer,
+  botttsNeutral,
+  initials,
+  rings,
+} from '@dicebear/collection';
 
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
@@ -9,7 +14,7 @@ import { AvatarFallback } from '@radix-ui/react-avatar';
 interface GeneratedAvatarProps {
   seed: string;
   className?: string;
-  variant: 'adventurer' | 'bottsNeutral' | 'initials';
+  variant: 'adventurer' | 'bottsNeutral' | 'initials' | 'rings';
 }
 
 export const GeneratedAvatar = ({
@@ -25,6 +30,10 @@ export const GeneratedAvatar = ({
     });
   } else if (variant === 'bottsNeutral') {
     avatar = createAvatar(botttsNeutral, {
+      seed,
+    });
+  } else if (variant === 'rings') {
+    avatar = createAvatar(rings, {
       seed,
     });
   } else {

@@ -92,3 +92,20 @@ export const updateMeeting = async (
   return res_data;
 };
 
+export const getOneMeeting = async (meetingId: string) => {
+  const url = new URL(`http://localhost:8000/meetings/${meetingId}`);
+
+  const res = await fetch(url, {
+    method: 'GET',
+    credentials: 'include', // IMPORTANT: sends cookies for session
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to get meeting: ${res.status}`);
+  }
+
+  const res_data = await res.json();
+  return res_data;
+};

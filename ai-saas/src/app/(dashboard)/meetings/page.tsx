@@ -1,4 +1,4 @@
-import { MeetingView } from '@/modules/meetings/ui/meetings-view';
+import { MeetingView } from '@/modules/meetings/ui/views/meetings-view';
 import { MeetingsListHeader } from '@/modules/meetings/components/meeting-list-header';
 
 const Page = () => {
