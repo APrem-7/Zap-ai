@@ -10,6 +10,7 @@ interface MeetingDetailsCardProps {
   meetingAgentName: string;
   meetingId: string;
   meetingName: string;
+meetingUserName: string;
   onStartMeeting: () => void;
   onScheduleMeeting: () => void;
 }
@@ -18,6 +19,7 @@ export const MeetingDetailsCard = ({
   meetingAgentName,
   meetingId,
   meetingName,
+  meetingUserName,
   onStartMeeting,
   onScheduleMeeting,
 }: MeetingDetailsCardProps) => {
@@ -46,7 +48,7 @@ export const MeetingDetailsCard = ({
               </Badge>
               <Badge variant="outline" className="flex items-center gap-1">
                 <UserIcon className="h-3 w-3" />
-                TODO : Insert USer Name
+                 {meetingUserName || 'Error'}
               </Badge>
             </div>
           </div>

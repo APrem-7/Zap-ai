@@ -53,6 +53,7 @@ export const MeetingsIdView = ({ meetingId }: Props) => {
           meetingId={meetingId}
           meetingName={data.name}
           meetingAgentName={data.agentName}
+          meetingUserName={data.userName}
           onStartMeeting={() => alert('start meeting clicked')}
           onScheduleMeeting={() => alert('schedule meeting clicked')}
         />
