@@ -35,8 +35,8 @@ export const MeetingDetailsCard = ({
 
           <div className="flex-1">
             <h2 className="text-xl font-semibold">{meetingName || 'qeqwee'}</h2>
-            <p className="text-sm text-muted-foreground">
-              Agent:{meetingAgentName}
+            <p className="text-sm text-muted-foreground">             
+              Agent: {meetingAgentName}
             </p>
 
             <div className="flex items-center gap-2 mt-3">
