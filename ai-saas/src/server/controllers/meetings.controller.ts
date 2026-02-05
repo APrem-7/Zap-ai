@@ -45,7 +45,6 @@ export const getMeetings = async (req: Request, res: Response) => {
     // Type-safe status filtering
     const statusFilter = status;
 
-
     console.log(`🎯 Status filter: ${statusFilter || 'none'}`);
     console.log(`🎯 Search filter: ${search || 'none'}`);
     console.log(`🎯 AgentId filter: ${agentId || 'none'}`);
@@ -191,8 +190,10 @@ export const getOneMeeting = async (req: Request, res: Response) => {
         id: meetings.id,
         name: meetings.name,
         agentId: meetings.agentId,
+        agentName: agents.name,
       })
       .from(meetings)
+      .innerJoin(agents, eq(meetings.agentId, agents.id))
       .where(and(eq(meetings.userId, req.user.id), eq(meetings.id, meetingId)))
       .limit(1);
 
