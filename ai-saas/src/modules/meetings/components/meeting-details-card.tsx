@@ -27,7 +27,7 @@ export const MeetingDetailsCard = ({
         <div className="flex items-start gap-4">
           <GeneratedAvatar
             seed={meetingName}
-            variant="adventurer"
+            variant="initials"
             className="border size-20"
           />
 
