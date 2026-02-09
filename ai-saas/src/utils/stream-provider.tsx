@@ -12,9 +12,6 @@ export const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
 
   const { data: session, isPending, error } = useSession();
 
-  if (isPending) return null;
-  if (error) return null;
-
   useEffect(() => {
     if (!session?.user.id || !apiKey) return;
     if (!tokenProvider) return;
