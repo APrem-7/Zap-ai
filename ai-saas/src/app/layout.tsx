@@ -4,7 +4,10 @@ import './globals.css';
 
 import Providers from './providers';
 import { Toaster } from 'sonner';
-import {NuqsAdapter} from 'nuqs/adapters/next/app';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
+
+import '@stream-io/video-react-sdk/dist/css/styles.css';
+import { StreamVideoProvider } from '@/utils/stream-provider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -24,10 +27,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
         <Providers>
-          <NuqsAdapter>
-            <Toaster />
-            {children}
-          </NuqsAdapter>
+          <StreamVideoProvider>
+            <NuqsAdapter>
+              <Toaster />
+              {children}
+            </NuqsAdapter>
+          </StreamVideoProvider>
         </Providers>
       </body>
     </html>
