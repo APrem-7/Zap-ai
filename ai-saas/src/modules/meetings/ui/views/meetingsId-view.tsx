@@ -8,12 +8,14 @@ import { LoadingState } from '@/components/loading-state';
 import { json } from 'zod';
 import { MeetingIdHeaderView } from './MeetingIdHeaderView';
 import { MeetingDetailsCard } from '@/modules/meetings/components/meeting-details-card';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   meetingId: string;
 }
 
 export const MeetingsIdView = ({ meetingId }: Props) => {
+  const router = useRouter();
   const queryClient = getQueryClient();
   const { data, isLoading, error } = useQuery({
     queryKey: ['meetings', meetingId],
@@ -54,7 +56,9 @@ export const MeetingsIdView = ({ meetingId }: Props) => {
           meetingName={data.name}
           meetingAgentName={data.agentName}
           meetingUserName={data.userName}
-          onStartMeeting={() => alert('start meeting clicked')}
+          onStartMeeting={() => {
+            router.push(`/call/${meetingId}`);
+          }}
           onScheduleMeeting={() => alert('schedule meeting clicked')}
         />
       </div>
