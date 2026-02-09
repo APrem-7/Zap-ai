@@ -11,8 +11,65 @@ import { redis } from '@/lib/redis';
 
 import { meetingInsertSchema } from '@/modules/meetings/schema';
 
+import { streamVideo } from '@/lib/stream-video';
+
 // Use the meeting status enum from database schema
 type MeetingStatus = (typeof meetingStatus.enumValues)[number];
+
+// Function to create a Stream video call
+const createStreamCall = async (meetingId: string, userId: string) => {
+  try {
+    const call = streamVideo.video.call('default', meetingId);
+    await call.create({
+      data: {
+        created_by_id: userId,
+        custom: {
+          meetingId: meetingId,
+        },
+        settings_override: {
+          transcription: {
+            language: 'en',
+            mode: 'auto-on',
+            closed_caption_mode: 'auto-on',
+          },
+          recording: {
+            mode: 'auto-on',
+            quality: '1080p',
+          },
+        },
+      },
+    });
+
+    return true;
+  } catch (error) {
+    console.error('❌ Error creating Stream call:', error);
+    return false;
+  }
+};
+
+export const generateMeetingToken = async (req: Request, res: Response) => {
+  const user = req.user!;
+  await streamVideo.upsertUsers([
+    {
+      id: user.id,
+      name: user.name,
+      image: user.avatar,
+    },
+  ]);
+
+  //token timing
+  const expirationTime = Math.floor(Date.now() / 1000) + 3600;
+  const issuedAt = Math.floor(Date.now() / 1000) - 60;
+
+  //generatetoken
+  const meetingToken = streamVideo.generateUserToken({
+    user_id: user.id,
+    exp: expirationTime,
+    validity_in_seconds: issuedAt,
+  });
+
+  return res.json({ meetingToken });
+};
 
 export const getMeetings = async (req: Request, res: Response) => {
   console.log('📋 GET /meetings endpoint hit');
@@ -169,7 +226,35 @@ export const createMeetings = async (req: Request, res: Response) => {
     if (!data) {
       return res.status(500).json({ message: 'Failed to create meeting' });
     }
-    return res.json(data);
+
+    // Create corresponding Stream video call
+    const streamCallCreated = await createStreamCall(data.id, req.user.id);
+    if (!streamCallCreated) {
+      console.error('⚠️ Meeting created but Stream call failed');
+    }
+
+    const [existingAgent] = await db
+      .select()
+      .from(agents)
+      .where(eq(agents.id, data.agentId));
+    if (!existingAgent) {
+      throw new Error('Agent not found');
+    }
+
+    await streamVideo.upsertUsers([
+      {
+        id: existingAgent.id,
+        name: existingAgent.name,
+        role: 'user',
+      },
+    ]);
+
+    const meetingToken = streamVideo.generateUserToken({
+      user_id: req.user.id,
+      validity_in_seconds: 3600,
+    });
+
+    return res.json({ data, meetingToken });
   } catch (error) {
     console.error('❌ Error in createmeetings:', error);
     return res.status(500).json({
@@ -186,13 +271,7 @@ export const getOneMeeting = async (req: Request, res: Response) => {
     }
 
     const [data] = await db
-      .select({
-        id: meetings.id,
-        name: meetings.name,
-        agentId: meetings.agentId,
-        agentName: agents.name,
-        userName: user.name,
-      })
+      .select()
       .from(meetings)
       .innerJoin(agents, eq(meetings.agentId, agents.id))
       .innerJoin(user, eq(meetings.userId, user.id))
