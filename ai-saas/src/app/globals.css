@@ -155,7 +155,9 @@
   }
 
   .hover-lift {
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    transition:
+      transform 0.2s ease-out,
+      box-shadow 0.2s ease-out;
   }
 
   .hover-lift:hover {
@@ -236,8 +238,494 @@
   }
 }
 
-/* Change ring color for all the ShadCN elements */
-:root {
-  --ring: 221 83% 23%; /* hsl for #00246b */
+/* ==========================================================================
+   STREAM VIDEO SDK — GOOGLE MEET-STYLE OVERRIDES
+   
+   Design system:
+   - Background:  #202124 (Google Meet dark)
+   - Surface:     #303134 (cards, panels)
+   - Elevated:    #3c4043 (hover states, borders)
+   - Text:        #e8eaed (primary), #9aa0a6 (secondary)
+   - Accent:      #8ab4f8 (Google blue highlight)
+   - Danger:      #ea4335 (end call red)
+   - Radius:      16px (video tiles), 24px (controls), 12px (menus)
+   - Transitions: 200ms ease
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. RESET STREAM BRAND COLORS
+   Kill all default blue borders, focus rings, and brand color usage
+   -------------------------------------------------------------------------- */
+.str-video {
+  --str-video__primary-color: transparent !important;
+  --str-video__secondary-color: transparent !important;
+  --str-video__brand-color1: transparent !important;
+  --str-video__brand-color2: transparent !important;
+  --str-video__brand-color3: transparent !important;
+  --str-video__text-color1: #e8eaed !important;
+  --str-video__text-color2: #9aa0a6 !important;
+  --str-video__base-color1: #202124 !important;
+  --str-video__base-color2: #303134 !important;
+  --str-video__base-color3: #3c4043 !important;
+  --str-video__base-color4: #5f6368 !important;
+  --str-video__border-radius: 16px !important;
 }
 
+/* --------------------------------------------------------------------------
+   2. ROOT CONTAINER — full-bleed dark canvas
+   -------------------------------------------------------------------------- */
+.str-video,
+.str-video__call,
+.str-video__room {
+  background-color: #202124 !important;
+  color: #e8eaed !important;
+  font-family: inherit !important;
+}
+
+/* Remove any rogue padding/margins Stream injects on root wrappers */
+.str-video__call-controls,
+.str-video__room-container {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. PARTICIPANT VIEWS — rounded tiles with soft shadows
+   -------------------------------------------------------------------------- */
+
+/* Base tile */
+.str-video__participant-view {
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
+              0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  transition: box-shadow 200ms ease, transform 200ms ease !important;
+  background-color: #303134 !important;
+  position: relative !important;
+}
+
+.str-video__participant-view:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4),
+              0 2px 6px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Kill the blue focus ring Stream adds when a tile is speaking / focused */
+.str-video__participant-view--focused,
+.str-video__participant-view--speaking,
+.str-video__participant-view:focus,
+.str-video__participant-view:focus-visible,
+.str-video__participant-view:focus-within {
+  outline: none !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
+              0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  ring: 0 !important;
+}
+
+/* Optional: subtle speaking indicator via glow instead of border */
+.str-video__participant-view--speaking {
+  box-shadow: 0 0 0 2px rgba(138, 180, 248, 0.4),
+              0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Video element inside tile */
+.str-video__participant-view video,
+.str-video__participant-view .str-video__video {
+  border-radius: 16px !important;
+  object-fit: cover !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. PARTICIPANT NAME & DETAILS OVERLAY
+   -------------------------------------------------------------------------- */
+.str-video__participant-details {
+  background: rgba(0, 0, 0, 0.55) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border-radius: 8px !important;
+  padding: 4px 10px !important;
+  margin: 0 !important;
+  bottom: 10px !important;
+  left: 10px !important;
+  right: auto !important;
+  position: absolute !important;
+  z-index: 5 !important;
+  max-width: calc(100% - 20px) !important;
+}
+
+.str-video__participant-details__name,
+.str-video__participant-name {
+  color: #e8eaed !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.01em !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+  background: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Audio level / mic indicator next to name */
+.str-video__participant-details__audio-level-indicator,
+.str-video__participant-details__mic-icon {
+  color: #e8eaed !important;
+  opacity: 0.85 !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. AVATAR / NO-VIDEO PLACEHOLDER
+   -------------------------------------------------------------------------- */
+.str-video__participant-view .str-video__avatar,
+.str-video__no-media {
+  background-color: #3c4043 !important;
+  border-radius: 50% !important;
+}
+
+.str-video__avatar__text {
+  color: #e8eaed !important;
+  font-weight: 600 !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. VIDEO GRID LAYOUTS — proper spacing, no overflow
+   -------------------------------------------------------------------------- */
+
+/* Paginated grid */
+.str-video__paginated-grid-layout {
+  background-color: #202124 !important;
+  padding: 16px !important;
+  gap: 12px !important;
+  padding-bottom: 96px !important; /* room for floating controls */
+}
+
+.str-video__paginated-grid-layout__group {
+  gap: 12px !important;
+}
+
+/* Speaker layout */
+.str-video__speaker-layout {
+  background-color: #202124 !important;
+  padding: 16px !important;
+  gap: 12px !important;
+  padding-bottom: 96px !important;
+}
+
+.str-video__speaker-layout__wrapper {
+  gap: 12px !important;
+}
+
+.str-video__speaker-layout__participant-bar {
+  background-color: transparent !important;
+  gap: 8px !important;
+  padding: 0 !important;
+}
+
+/* Speaker bar participant tiles (small) */
+.str-video__speaker-layout__participant-bar .str-video__participant-view {
+  border-radius: 12px !important;
+  min-width: 160px !important;
+}
+
+/* Generic grid layout */
+.str-video__grid-layout {
+  background-color: #202124 !important;
+  gap: 12px !important;
+  padding: 16px !important;
+  padding-bottom: 96px !important;
+}
+
+/* --------------------------------------------------------------------------
+   7. SCREEN SHARE — clean presentation mode
+   -------------------------------------------------------------------------- */
+.str-video__screen-share-overlay,
+.str-video__screen-share {
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  background-color: #000 !important;
+}
+
+.str-video__screen-share video {
+  border-radius: 16px !important;
+}
+
+/* --------------------------------------------------------------------------
+   8. VIDEO PREVIEW (LOBBY) — match the dark theme
+   -------------------------------------------------------------------------- */
+.str-video__video-preview {
+  background-color: #1a1a1d !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  border: none !important;
+}
+
+.str-video__video-preview video {
+  border-radius: 12px !important;
+  object-fit: cover !important;
+}
+
+/* --------------------------------------------------------------------------
+   9. DEVICE SETTINGS — dark dropdown menus
+   -------------------------------------------------------------------------- */
+.str-video__device-settings {
+  background-color: #303134 !important;
+  border: 1px solid #3c4043 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  color: #e8eaed !important;
+  padding: 16px !important;
+}
+
+.str-video__device-settings__heading,
+.str-video__device-settings label {
+  color: #e8eaed !important;
+  font-weight: 500 !important;
+}
+
+.str-video__device-settings select,
+.str-video__device-settings__device-kind select {
+  background-color: #3c4043 !important;
+  color: #e8eaed !important;
+  border: 1px solid #5f6368 !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+  font-size: 13px !important;
+  appearance: auto !important;
+  cursor: pointer !important;
+  transition: border-color 200ms ease !important;
+}
+
+.str-video__device-settings select:hover,
+.str-video__device-settings select:focus {
+  border-color: #8ab4f8 !important;
+  outline: none !important;
+}
+
+.str-video__device-settings__device-kind {
+  margin-bottom: 12px !important;
+}
+
+/* --------------------------------------------------------------------------
+   10. MENUS & DROPDOWNS — dark contextual menus
+   -------------------------------------------------------------------------- */
+.str-video__menu-container {
+  background-color: #303134 !important;
+  border: 1px solid #3c4043 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  z-index: 9999 !important;
+  overflow: hidden !important;
+  padding: 4px !important;
+}
+
+.str-video__menu-item {
+  color: #e8eaed !important;
+  padding: 8px 14px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: background-color 150ms ease !important;
+  font-size: 13px !important;
+}
+
+.str-video__menu-item:hover {
+  background-color: #3c4043 !important;
+}
+
+.str-video__menu-item svg {
+  color: #e8eaed !important;
+  opacity: 0.85 !important;
+}
+
+.str-video__menu-item span {
+  color: #e8eaed !important;
+}
+
+/* Dropdown list (device selectors in menus) */
+.str-video__dropdown-list {
+  background-color: #303134 !important;
+  border: 1px solid #3c4043 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  z-index: 9998 !important;
+}
+
+/* --------------------------------------------------------------------------
+   11. CALL CONTROLS BAR (Stream default, if used)
+   Override in case any native Stream controls render
+   -------------------------------------------------------------------------- */
+.str-video__call-controls {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.str-video__call-controls__button {
+  background-color: #3c4043 !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 48px !important;
+  height: 48px !important;
+  color: #e8eaed !important;
+  transition: background-color 200ms ease, transform 150ms ease !important;
+  cursor: pointer !important;
+}
+
+.str-video__call-controls__button:hover {
+  background-color: #4a4d51 !important;
+  transform: scale(1.05) !important;
+}
+
+.str-video__call-controls__button:focus,
+.str-video__call-controls__button:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(138, 180, 248, 0.4) !important;
+}
+
+.str-video__call-controls__button svg {
+  color: #e8eaed !important;
+}
+
+/* End call button variant (red) */
+.str-video__call-controls__button--variant-cancel,
+.str-video__call-controls__button--cancel,
+.str-video__end-call-button {
+  background-color: #ea4335 !important;
+  width: 64px !important;
+  border-radius: 24px !important;
+}
+
+.str-video__call-controls__button--variant-cancel:hover,
+.str-video__call-controls__button--cancel:hover,
+.str-video__end-call-button:hover {
+  background-color: #d93025 !important;
+}
+
+/* --------------------------------------------------------------------------
+   12. NOTIFICATION / PERMISSION PROMPTS
+   -------------------------------------------------------------------------- */
+.str-video__notification {
+  background-color: #303134 !important;
+  color: #e8eaed !important;
+  border: 1px solid #3c4043 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+.str-video__permission-notification {
+  background-color: #303134 !important;
+  border-radius: 12px !important;
+}
+
+/* --------------------------------------------------------------------------
+   13. Z-INDEX STACKING ORDER
+   Controlled hierarchy so menus never get clipped
+   -------------------------------------------------------------------------- */
+.str-video__portal {
+  z-index: 9990 !important;
+}
+
+.str-video__portal-content {
+  z-index: 10000 !important;
+}
+
+/* --------------------------------------------------------------------------
+   14. GLOBAL CLEANUP — kill stray borders, outlines, focus rings
+   -------------------------------------------------------------------------- */
+
+/* Remove blue outlines everywhere inside Stream */
+.str-video *:focus,
+.str-video *:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Reset any leftover blue border/ring utility from Stream */
+.str-video [class*='--active'],
+.str-video [class*='--selected'] {
+  border-color: transparent !important;
+  outline: none !important;
+}
+
+/* Remove unwanted scrollbars in Stream containers */
+.str-video__paginated-grid-layout,
+.str-video__speaker-layout,
+.str-video__grid-layout {
+  overflow: hidden !important;
+}
+
+/* Participant bar can scroll horizontally if needed */
+.str-video__speaker-layout__participant-bar {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+}
+
+.str-video__speaker-layout__participant-bar::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   15. RESPONSIVE REFINEMENTS
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .str-video__paginated-grid-layout,
+  .str-video__grid-layout {
+    padding: 8px !important;
+    gap: 8px !important;
+    padding-bottom: 88px !important;
+  }
+
+  .str-video__speaker-layout {
+    padding: 8px !important;
+    padding-bottom: 88px !important;
+  }
+
+  .str-video__speaker-layout__participant-bar .str-video__participant-view {
+    min-width: 120px !important;
+  }
+
+  .str-video__participant-details {
+    padding: 3px 8px !important;
+    bottom: 6px !important;
+    left: 6px !important;
+  }
+
+  .str-video__participant-details__name,
+  .str-video__participant-name {
+    font-size: 11px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16. SMOOTH TRANSITIONS — fade tiles in/out gracefully
+   -------------------------------------------------------------------------- */
+.str-video__participant-view {
+  animation: meetTileFadeIn 300ms ease forwards !important;
+}
+
+@keyframes meetTileFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .str-video__participant-view {
+    animation: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   17. LOCAL PARTICIPANT — hide redundant context menu
+   -------------------------------------------------------------------------- */
+.local-participant-view .str-video__menu-container {
+  display: none !important;
+}
