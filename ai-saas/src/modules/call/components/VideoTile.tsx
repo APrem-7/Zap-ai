@@ -5,6 +5,13 @@ import { StreamVideoParticipant, Video } from '@stream-io/video-react-sdk';
 import { cn } from '@/lib/utils';
 import { Mic, MicOff, Pin } from 'lucide-react';
 
+/** Stream SDK track type numeric constants */
+const TrackType = {
+  AUDIO: 1,
+  VIDEO: 2,
+  SCREEN_SHARE: 3,
+} as const;
+
 interface VideoTileProps {
   participant: StreamVideoParticipant;
   isSpeaking?: boolean;
@@ -15,14 +22,10 @@ interface VideoTileProps {
 
 export const VideoTile = memo(
   ({ participant, isSpeaking, isPinned, className, style }: VideoTileProps) => {
-    const hasVideo = participant.publishedTracks.includes(
-      2 // SfuModels.TrackType.VIDEO
-    );
-    const hasAudio = participant.publishedTracks.includes(
-      1 // SfuModels.TrackType.AUDIO
-    );
+    const hasVideo = participant.publishedTracks.includes(TrackType.VIDEO);
+    const hasAudio = participant.publishedTracks.includes(TrackType.AUDIO);
     const hasScreenShare = participant.publishedTracks.includes(
-      3 // SfuModels.TrackType.SCREEN_SHARE
+      TrackType.SCREEN_SHARE
     );
 
     const displayName = participant.name || participant.userId || 'Unknown';

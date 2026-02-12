@@ -3,6 +3,7 @@ import { useGetCallById } from '@/hooks/useGetCallById';
 import { MeetingRoom } from '../../components/callMeeting-room';
 import { JoinCallCard } from '../components/join-call-card';
 import { CallProvider } from '../../providers/call-provider';
+import { CallErrorBoundary } from '../../components/call-error-boundary';
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -72,24 +73,26 @@ export const CallIdView = ({ meetingId }: Props) => {
 
   return (
     <main className="min-h-screen w-full flex items-center justify-center bg-[#202124]">
-      <StreamCall call={call}>
-        <StreamTheme>
-          <CallProvider>
-            {confirmJoin ? (
-              <MeetingRoom />
-            ) : (
-              <JoinCallCard
-                meetingId={meetingId}
-                meetingTitle={meeting?.meetings?.name || 'Team Meeting'}
-                hostName={call.state.createdBy?.name || 'Unknown Host'}
-                participantCount={call.state.members?.length || 1}
-                onJoin={handleJoin}
-                isJoining={isJoining}
-              />
-            )}
-          </CallProvider>
-        </StreamTheme>
-      </StreamCall>
+      <CallErrorBoundary>
+        <StreamCall call={call}>
+          <StreamTheme>
+            <CallProvider>
+              {confirmJoin ? (
+                <MeetingRoom />
+              ) : (
+                <JoinCallCard
+                  meetingId={meetingId}
+                  meetingTitle={meeting?.meetings?.name || 'Team Meeting'}
+                  hostName={call.state.createdBy?.name || 'Unknown Host'}
+                  participantCount={call.state.members?.length || 1}
+                  onJoin={handleJoin}
+                  isJoining={isJoining}
+                />
+              )}
+            </CallProvider>
+          </StreamTheme>
+        </StreamCall>
+      </CallErrorBoundary>
     </main>
   );
 };

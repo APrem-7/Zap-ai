@@ -57,15 +57,10 @@ export const generateMeetingToken = async (req: Request, res: Response) => {
     },
   ]);
 
-  //token timing
-  const expirationTime = Math.floor(Date.now() / 1000) + 3600;
-  const issuedAt = Math.floor(Date.now() / 1000) - 60;
-
   //generatetoken
   const meetingToken = streamVideo.generateUserToken({
     user_id: user.id,
-    exp: expirationTime,
-    validity_in_seconds: issuedAt,
+    validity_in_seconds: 3600,
   });
 
   return res.json({ meetingToken });
@@ -230,7 +225,15 @@ export const createMeetings = async (req: Request, res: Response) => {
     // Create corresponding Stream video call
     const streamCallCreated = await createStreamCall(data.id, req.user.id);
     if (!streamCallCreated) {
-      console.error('⚠️ Meeting created but Stream call failed');
+      // Rollback: delete the orphaned meeting from DB since Stream call failed
+      await db
+        .delete(meetings)
+        .where(eq(meetings.id, data.id));
+      // Re-invalidate cache since we just rolled back
+      await redis.invalidate(pattern);
+      return res.status(500).json({
+        message: 'Failed to create video call. Please try again.',
+      });
     }
 
     const [existingAgent] = await db

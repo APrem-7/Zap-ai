@@ -252,6 +252,28 @@
    - Transitions: 200ms ease
    ========================================================================== */
 
+:root {
+  --meet-bg-primary: #202124;
+  --meet-bg-secondary: #303134;
+  --meet-bg-elevated: #3c4043;
+  --meet-bg-hover: #4a4d51;
+  --meet-bg-muted: #5f6368;
+  --meet-text-primary: #e8eaed;
+  --meet-text-secondary: #9aa0a6;
+  --meet-accent: #8ab4f8;
+  --meet-danger: #ea4335;
+  --meet-danger-hover: #d93025;
+  --meet-radius-sm: 8px;
+  --meet-radius-md: 12px;
+  --meet-radius-lg: 16px;
+  --meet-radius-xl: 24px;
+  --meet-transition: 200ms ease;
+  --meet-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --meet-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+  --meet-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.25);
+  --meet-shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
 /* --------------------------------------------------------------------------
    1. RESET STREAM BRAND COLORS
    Kill all default blue borders, focus rings, and brand color usage
@@ -262,13 +284,13 @@
   --str-video__brand-color1: transparent !important;
   --str-video__brand-color2: transparent !important;
   --str-video__brand-color3: transparent !important;
-  --str-video__text-color1: #e8eaed !important;
-  --str-video__text-color2: #9aa0a6 !important;
-  --str-video__base-color1: #202124 !important;
-  --str-video__base-color2: #303134 !important;
-  --str-video__base-color3: #3c4043 !important;
-  --str-video__base-color4: #5f6368 !important;
-  --str-video__border-radius: 16px !important;
+  --str-video__text-color1: var(--meet-text-primary) !important;
+  --str-video__text-color2: var(--meet-text-secondary) !important;
+  --str-video__base-color1: var(--meet-bg-primary) !important;
+  --str-video__base-color2: var(--meet-bg-secondary) !important;
+  --str-video__base-color3: var(--meet-bg-elevated) !important;
+  --str-video__base-color4: var(--meet-bg-muted) !important;
+  --str-video__border-radius: var(--meet-radius-lg) !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -277,8 +299,8 @@
 .str-video,
 .str-video__call,
 .str-video__room {
-  background-color: #202124 !important;
-  color: #e8eaed !important;
+  background-color: var(--meet-bg-primary) !important;
+  color: var(--meet-text-primary) !important;
   font-family: inherit !important;
 }
 
@@ -295,20 +317,18 @@
 
 /* Base tile */
 .str-video__participant-view {
-  border-radius: 16px !important;
+  border-radius: var(--meet-radius-lg) !important;
   overflow: hidden !important;
   border: none !important;
   outline: none !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
-              0 1px 3px rgba(0, 0, 0, 0.2) !important;
-  transition: box-shadow 200ms ease, transform 200ms ease !important;
-  background-color: #303134 !important;
+  box-shadow: var(--meet-shadow-md) !important;
+  transition: box-shadow var(--meet-transition), transform var(--meet-transition) !important;
+  background-color: var(--meet-bg-secondary) !important;
   position: relative !important;
 }
 
 .str-video__participant-view:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4),
-              0 2px 6px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: var(--meet-shadow-lg) !important;
 }
 
 /* Kill the blue focus ring Stream adds when a tile is speaking / focused */
@@ -319,8 +339,7 @@
 .str-video__participant-view:focus-within {
   outline: none !important;
   border: none !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
-              0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: var(--meet-shadow-md) !important;
   ring: 0 !important;
 }
 
@@ -333,7 +352,7 @@
 /* Video element inside tile */
 .str-video__participant-view video,
 .str-video__participant-view .str-video__video {
-  border-radius: 16px !important;
+  border-radius: var(--meet-radius-lg) !important;
   object-fit: cover !important;
 }
 
@@ -344,7 +363,7 @@
   background: rgba(0, 0, 0, 0.55) !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
-  border-radius: 8px !important;
+  border-radius: var(--meet-radius-sm) !important;
   padding: 4px 10px !important;
   margin: 0 !important;
   bottom: 10px !important;
@@ -357,7 +376,7 @@
 
 .str-video__participant-details__name,
 .str-video__participant-name {
-  color: #e8eaed !important;
+  color: var(--meet-text-primary) !important;
   font-size: 12px !important;
   font-weight: 500 !important;
   line-height: 1.4 !important;
@@ -371,7 +390,7 @@
 /* Audio level / mic indicator next to name */
 .str-video__participant-details__audio-level-indicator,
 .str-video__participant-details__mic-icon {
-  color: #e8eaed !important;
+  color: var(--meet-text-primary) !important;
   opacity: 0.85 !important;
 }
 
@@ -380,12 +399,12 @@
    -------------------------------------------------------------------------- */
 .str-video__participant-view .str-video__avatar,
 .str-video__no-media {
-  background-color: #3c4043 !important;
+  background-color: var(--meet-bg-elevated) !important;
   border-radius: 50% !important;
 }
 
 .str-video__avatar__text {
-  color: #e8eaed !important;
+  color: var(--meet-text-primary) !important;
   font-weight: 600 !important;
 }
 
@@ -395,7 +414,7 @@
 
 /* Paginated grid */
 .str-video__paginated-grid-layout {
-  background-color: #202124 !important;
+  background-color: var(--meet-bg-primary) !important;
   padding: 16px !important;
   gap: 12px !important;
   padding-bottom: 96px !important; /* room for floating controls */
@@ -407,7 +426,7 @@
 
 /* Speaker layout */
 .str-video__speaker-layout {
-  background-color: #202124 !important;
+  background-color: var(--meet-bg-primary) !important;
   padding: 16px !important;
   gap: 12px !important;
   padding-bottom: 96px !important;
@@ -425,13 +444,13 @@
 
 /* Speaker bar participant tiles (small) */
 .str-video__speaker-layout__participant-bar .str-video__participant-view {
-  border-radius: 12px !important;
+  border-radius: var(--meet-radius-md) !important;
   min-width: 160px !important;
 }
 
 /* Generic grid layout */
 .str-video__grid-layout {
-  background-color: #202124 !important;
+  background-color: var(--meet-bg-primary) !important;
   gap: 12px !important;
   padding: 16px !important;
   padding-bottom: 96px !important;
@@ -442,13 +461,13 @@
    -------------------------------------------------------------------------- */
 .str-video__screen-share-overlay,
 .str-video__screen-share {
-  border-radius: 16px !important;
+  border-radius: var(--meet-radius-lg) !important;
   overflow: hidden !important;
   background-color: #000 !important;
 }
 
 .str-video__screen-share video {
-  border-radius: 16px !important;
+  border-radius: var(--meet-radius-lg) !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -456,13 +475,13 @@
    -------------------------------------------------------------------------- */
 .str-video__video-preview {
   background-color: #1a1a1d !important;
-  border-radius: 12px !important;
+  border-radius: var(--meet-radius-md) !important;
   overflow: hidden !important;
   border: none !important;
 }
 
 .str-video__video-preview video {
-  border-radius: 12px !important;
+  border-radius: var(--meet-radius-md) !important;
   object-fit: cover !important;
 }
 
@@ -470,36 +489,36 @@
    9. DEVICE SETTINGS — dark dropdown menus
    -------------------------------------------------------------------------- */
 .str-video__device-settings {
-  background-color: #303134 !important;
-  border: 1px solid #3c4043 !important;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
-  color: #e8eaed !important;
+  background-color: var(--meet-bg-secondary) !important;
+  border: 1px solid var(--meet-bg-elevated) !important;
+  border-radius: var(--meet-radius-md) !important;
+  box-shadow: var(--meet-shadow-xl) !important;
+  color: var(--meet-text-primary) !important;
   padding: 16px !important;
 }
 
 .str-video__device-settings__heading,
 .str-video__device-settings label {
-  color: #e8eaed !important;
+  color: var(--meet-text-primary) !important;
   font-weight: 500 !important;
 }
 
 .str-video__device-settings select,
 .str-video__device-settings__device-kind select {
-  background-color: #3c4043 !important;
-  color: #e8eaed !important;
-  border: 1px solid #5f6368 !important;
-  border-radius: 8px !important;
+  background-color: var(--meet-bg-elevated) !important;
+  color: var(--meet-text-primary) !important;
+  border: 1px solid var(--meet-bg-muted) !important;
+  border-radius: var(--meet-radius-sm) !important;
   padding: 8px 12px !important;
   font-size: 13px !important;
   appearance: auto !important;
   cursor: pointer !important;
-  transition: border-color 200ms ease !important;
+  transition: border-color var(--meet-transition) !important;
 }
 
 .str-video__device-settings select:hover,
 .str-video__device-settings select:focus {
-  border-color: #8ab4f8 !important;
+  border-color: var(--meet-accent) !important;
   outline: none !important;
 }
 
@@ -511,42 +530,42 @@
    10. MENUS & DROPDOWNS — dark contextual menus
    -------------------------------------------------------------------------- */
 .str-video__menu-container {
-  background-color: #303134 !important;
-  border: 1px solid #3c4043 !important;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  background-color: var(--meet-bg-secondary) !important;
+  border: 1px solid var(--meet-bg-elevated) !important;
+  border-radius: var(--meet-radius-md) !important;
+  box-shadow: var(--meet-shadow-xl) !important;
   z-index: 9999 !important;
   overflow: hidden !important;
   padding: 4px !important;
 }
 
 .str-video__menu-item {
-  color: #e8eaed !important;
+  color: var(--meet-text-primary) !important;
   padding: 8px 14px !important;
-  border-radius: 8px !important;
+  border-radius: var(--meet-radius-sm) !important;
   cursor: pointer !important;
   transition: background-color 150ms ease !important;
   font-size: 13px !important;
 }
 
 .str-video__menu-item:hover {
-  background-color: #3c4043 !important;
+  background-color: var(--meet-bg-elevated) !important;
 }
 
 .str-video__menu-item svg {
-  color: #e8eaed !important;
+  color: var(--meet-text-primary) !important;
   opacity: 0.85 !important;
 }
 
 .str-video__menu-item span {
-  color: #e8eaed !important;
+  color: var(--meet-text-primary) !important;
 }
 
 /* Dropdown list (device selectors in menus) */
 .str-video__dropdown-list {
-  background-color: #303134 !important;
-  border: 1px solid #3c4043 !important;
-  border-radius: 12px !important;
+  background-color: var(--meet-bg-secondary) !important;
+  border: 1px solid var(--meet-bg-elevated) !important;
+  border-radius: var(--meet-radius-md) !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
   z-index: 9998 !important;
 }
@@ -563,18 +582,18 @@
 }
 
 .str-video__call-controls__button {
-  background-color: #3c4043 !important;
+  background-color: var(--meet-bg-elevated) !important;
   border: none !important;
   border-radius: 50% !important;
   width: 48px !important;
   height: 48px !important;
-  color: #e8eaed !important;
-  transition: background-color 200ms ease, transform 150ms ease !important;
+  color: var(--meet-text-primary) !important;
+  transition: background-color var(--meet-transition), transform 150ms ease !important;
   cursor: pointer !important;
 }
 
 .str-video__call-controls__button:hover {
-  background-color: #4a4d51 !important;
+  background-color: var(--meet-bg-hover) !important;
   transform: scale(1.05) !important;
 }
 
@@ -585,38 +604,38 @@
 }
 
 .str-video__call-controls__button svg {
-  color: #e8eaed !important;
+  color: var(--meet-text-primary) !important;
 }
 
 /* End call button variant (red) */
 .str-video__call-controls__button--variant-cancel,
 .str-video__call-controls__button--cancel,
 .str-video__end-call-button {
-  background-color: #ea4335 !important;
+  background-color: var(--meet-danger) !important;
   width: 64px !important;
-  border-radius: 24px !important;
+  border-radius: var(--meet-radius-xl) !important;
 }
 
 .str-video__call-controls__button--variant-cancel:hover,
 .str-video__call-controls__button--cancel:hover,
 .str-video__end-call-button:hover {
-  background-color: #d93025 !important;
+  background-color: var(--meet-danger-hover) !important;
 }
 
 /* --------------------------------------------------------------------------
    12. NOTIFICATION / PERMISSION PROMPTS
    -------------------------------------------------------------------------- */
 .str-video__notification {
-  background-color: #303134 !important;
-  color: #e8eaed !important;
-  border: 1px solid #3c4043 !important;
-  border-radius: 12px !important;
+  background-color: var(--meet-bg-secondary) !important;
+  color: var(--meet-text-primary) !important;
+  border: 1px solid var(--meet-bg-elevated) !important;
+  border-radius: var(--meet-radius-md) !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
 }
 
 .str-video__permission-notification {
-  background-color: #303134 !important;
-  border-radius: 12px !important;
+  background-color: var(--meet-bg-secondary) !important;
+  border-radius: var(--meet-radius-md) !important;
 }
 
 /* --------------------------------------------------------------------------

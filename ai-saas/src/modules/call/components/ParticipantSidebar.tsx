@@ -7,6 +7,13 @@ import { X, Search, MicOff, VideoOff, UserPlus, Crown } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
+/** Stream SDK track type numeric constants */
+const TrackType = {
+  AUDIO: 1,
+  VIDEO: 2,
+  SCREEN_SHARE: 3,
+} as const;
+
 interface ParticipantSidebarProps {
   isOpen: boolean;
   onClose: () => void;
@@ -93,8 +100,8 @@ export const ParticipantSidebar = ({
               .toUpperCase()
               .slice(0, 2);
 
-            const hasAudio = participant.publishedTracks.includes(1);
-            const hasVideoTrack = participant.publishedTracks.includes(2);
+            const hasAudio = participant.publishedTracks.includes(TrackType.AUDIO);
+            const hasVideoTrack = participant.publishedTracks.includes(TrackType.VIDEO);
             const isHost = createdBy?.id === participant.userId;
 
             return (

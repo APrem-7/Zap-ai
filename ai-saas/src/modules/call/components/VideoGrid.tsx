@@ -5,6 +5,13 @@ import { useCallStateHooks } from '@stream-io/video-react-sdk';
 import { VideoTile } from './VideoTile';
 import { cn } from '@/lib/utils';
 
+/** Stream SDK track type numeric constants */
+const TrackType = {
+  AUDIO: 1,
+  VIDEO: 2,
+  SCREEN_SHARE: 3,
+} as const;
+
 interface VideoGridProps {
   className?: string;
 }
@@ -23,7 +30,7 @@ export const VideoGrid = ({ className }: VideoGridProps) => {
   const screenShareParticipant = useMemo(
     () =>
       participants.find((p) =>
-        p.publishedTracks.includes(3) // SCREEN_SHARE track type
+        p.publishedTracks.includes(TrackType.SCREEN_SHARE)
       ),
     [participants]
   );
