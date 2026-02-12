@@ -1,41 +1,33 @@
-import {useEffect,useState} from "react"
-import {Call,useStreamVideoClient} from "@stream-io/video-react-sdk"
-import { ReceiptRussianRuble } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { Call, useStreamVideoClient } from '@stream-io/video-react-sdk';
 
-export const useGetCallById = (id:string | string[]) =>{
-    const [call,setCall] = useState<Call>();
-    const [isCallLoading,setIsCallLoading]=useState(true)
+export const useGetCallById = (id: string | string[]) => {
+  const [call, setCall] = useState<Call>();
+  const [isCallLoading, setIsCallLoading] = useState(true);
 
-    const client = useStreamVideoClient()
+  const client = useStreamVideoClient();
 
-    useEffect(()=>{
-        if(!client){
-            return
-        }
+  useEffect(() => {
+    if (!client) {
+      return;
+    }
 
-        const loadCall = async () =>{
+    const loadCall = async () => {
+      try {
+        const { calls } = await client.queryCalls({
+          filter_conditions: { id },
+        });
 
-        try{
-            const {calls} = await client.queryCalls({
-                filter_conditions:{id}
-            });
-            
+        if (calls.length > 0) setCall(calls[0]);
+      } catch (error) {
+        console.error('Error loading call:', error);
+      } finally {
+        setIsCallLoading(false);
+      }
+    };
 
-            if(calls.length > 0) setCall(calls[0])
+    loadCall();
+  }, [id, client]);
 
-            setIsCallLoading(false)
-
-        }
-        catch(error){
-            throw error;
-            setIsCallLoading(false)
-        }
-        }
-
-        loadCall()
-    },[id,client])
-
-    return {call,isCallLoading}
-
-
-}
+  return { call, isCallLoading };
+};
