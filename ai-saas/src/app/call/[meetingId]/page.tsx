@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 
 import { getQueryClient } from '@/utils/query-client';
 import { CallIdView } from '@/modules/call/ui/views/callid-view';
+import { getOneMeeting } from '@/app/api/agents/meetings';
 
 interface Props {
   params: Promise<{
@@ -11,7 +12,6 @@ interface Props {
   }>;
 }
 const Page = async ({ params }: Props) => {
-  const queryClient = getQueryClient();
   const { meetingId } = await params;
 
   const session = await auth.api.getSession({
