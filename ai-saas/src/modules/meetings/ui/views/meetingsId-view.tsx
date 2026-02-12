@@ -8,12 +8,14 @@ import { LoadingState } from '@/components/loading-state';
 import { json } from 'zod';
 import { MeetingIdHeaderView } from './MeetingIdHeaderView';
 import { MeetingDetailsCard } from '@/modules/meetings/components/meeting-details-card';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   meetingId: string;
 }
 
 export const MeetingsIdView = ({ meetingId }: Props) => {
+  const router = useRouter();
   const queryClient = getQueryClient();
   const { data, isLoading, error } = useQuery({
     queryKey: ['meetings', meetingId],
@@ -43,7 +45,7 @@ export const MeetingsIdView = ({ meetingId }: Props) => {
       <div className="flex-1 py-4 px-4 md:px-8 flex flex-col gap-y-4">
         <MeetingIdHeaderView
           meetingId={meetingId}
-          meetingName={data.name}
+          meetingName={data.meetings.name}
           onEdit={() => {}}
           onCancel={() => {}}
           onDelete={() => {}}
@@ -51,10 +53,12 @@ export const MeetingsIdView = ({ meetingId }: Props) => {
 
         <MeetingDetailsCard
           meetingId={meetingId}
-          meetingName={data.name}
-          meetingAgentName={data.agentName}
-          meetingUserName={data.userName}
-          onStartMeeting={() => alert('start meeting clicked')}
+          meetingName={data.meetings.name}
+          meetingAgentName={data.agents.name}
+          meetingUserName={data.user.name}
+          onStartMeeting={() => {
+            router.push(`/call/${meetingId}`);
+          }}
           onScheduleMeeting={() => alert('schedule meeting clicked')}
         />
       </div>

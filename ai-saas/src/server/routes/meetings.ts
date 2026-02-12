@@ -8,6 +8,7 @@ import {
   createMeetings,
   deleteMeeting,
   updateMeeting,
+  generateMeetingToken,
 } from '../controllers/meetings.controller';
 
 const router = express.Router();
@@ -64,6 +65,8 @@ router.put(
   },
   updateMeeting
 );
+
+router.post('/token', requireAuth, generateMeetingToken);
 
 console.log('✅ Meetings routes configured');
 export default router;
