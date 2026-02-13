@@ -100,6 +100,7 @@ export const MeetingLayout = ({
         onToggleChat={handleToggleChat}
         isParticipantsOpen={isParticipantsOpen}
         isChatOpen={isChatOpen}
+        meetingId={meetingId}
       />
     </div>
   );

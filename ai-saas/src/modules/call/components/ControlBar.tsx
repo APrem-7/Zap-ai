@@ -37,6 +37,7 @@ interface ControlBarProps {
   isParticipantsOpen: boolean;
   isChatOpen: boolean;
   className?: string;
+  meetingId: string;
 }
 
 export const ControlBar = ({
@@ -46,6 +47,7 @@ export const ControlBar = ({
   isParticipantsOpen,
   isChatOpen,
   className,
+  meetingId,
 }: ControlBarProps) => {
   const {
     useCameraState,
