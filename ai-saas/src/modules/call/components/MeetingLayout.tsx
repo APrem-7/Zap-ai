@@ -11,12 +11,16 @@ import { ChatPanel } from './ChatPanel';
 interface MeetingLayoutProps {
   meetingId: string;
   onLeave: () => void;
+  agentConnected?: boolean;
+  onAgentToggle?: () => void;
   className?: string;
 }
 
 export const MeetingLayout = ({
   meetingId,
   onLeave,
+  agentConnected = false,
+  onAgentToggle,
   className,
 }: MeetingLayoutProps) => {
   const [isParticipantsOpen, setIsParticipantsOpen] = useState(false);
@@ -101,6 +105,8 @@ export const MeetingLayout = ({
         isParticipantsOpen={isParticipantsOpen}
         isChatOpen={isChatOpen}
         meetingId={meetingId}
+        agentConnected={agentConnected}
+        onAgentToggle={onAgentToggle}
       />
     </div>
   );

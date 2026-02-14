@@ -16,6 +16,7 @@ import {
   Settings,
   CircleDot,
   Captions,
+  Bot,
 } from 'lucide-react';
 import {
   Tooltip,
@@ -38,6 +39,8 @@ interface ControlBarProps {
   isChatOpen: boolean;
   className?: string;
   meetingId: string;
+  agentConnected?: boolean;
+  onAgentToggle?: () => void;
 }
 
 export const ControlBar = ({
@@ -48,6 +51,8 @@ export const ControlBar = ({
   isChatOpen,
   className,
   meetingId,
+  agentConnected = false,
+  onAgentToggle,
 }: ControlBarProps) => {
   const {
     useCameraState,
@@ -159,6 +164,29 @@ export const ControlBar = ({
           </TooltipTrigger>
           <TooltipContent side="top">
             {isScreenSharing ? 'Stop sharing' : 'Share your screen'}
+          </TooltipContent>
+        </Tooltip>
+
+        {/* AI Agent Toggle */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={onAgentToggle}
+              className={cn(
+                'flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full transition-all duration-200',
+                agentConnected
+                  ? 'bg-[#8ab4f8] text-[#202124] hover:bg-[#aecbfa]'
+                  : 'bg-[#3c4043] text-white hover:bg-[#4a4d51]'
+              )}
+              aria-label={
+                agentConnected ? 'Disconnect AI agent' : 'Connect AI agent'
+              }
+            >
+              <Bot className="h-5 w-5" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="top">
+            {agentConnected ? 'Disconnect AI agent' : 'Connect AI agent'}
           </TooltipContent>
         </Tooltip>
 
